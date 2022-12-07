@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, useToast, Breadcrumb, BreadcrumbItem, useDisclosure, AlertDialogBody, AlertDialogCloseButton, Center } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, useToast, Breadcrumb, BreadcrumbItem, useDisclosure, AlertDialogBody, AlertDialogCloseButton, Center, Highlight } from '@chakra-ui/react'
 import Teams from '../lib/teams.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
@@ -48,13 +48,10 @@ const Home = ({ teamsData }) => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [teamToVote, setTeamToVote] = useState(undefined)
-  let retrieved = {}
     
   Teams.sort((a: Team, b: Team) => {
     const getSpotA = getSpot(teamsData[a.name].sumOfVotes, teamsData[a.name].numberOfVotes)
     const getSpotB = getSpot(teamsData[b.name].sumOfVotes, teamsData[b.name].numberOfVotes)
-    retrieved[a.name] = getSpotA
-    retrieved[b.name] = getSpotB
 
     if (getSpotA > getSpotB) {
       return 1
@@ -114,9 +111,9 @@ const Home = ({ teamsData }) => {
         <VStack mt="1rem" spacing={2}>
           <HStack>
             <InfoIcon boxSize="3rem" />
-            <Text textAlign="center" fontSize="1.5rem">Spots in total: 30<br />Maximum spot: 30<br /></Text>
+            <Text textAlign="center" fontSize="1.5rem">Spots in total: 30</Text>
           </HStack>
-          <Text textAlign="center" fontSize="1.5rem">Once you have opted for the spot,<br />you can refresh the page</Text>
+          <Text textAlign="center" fontSize="1.5rem" lineHeight="2.5rem">You can refresh the page<br />once you have opted <span style={{ backgroundColor: '#B2F5EA', color: '#000', borderRadius: '9999px', padding: '0.4rem' }}>for the spot</span></Text>
         </VStack>
       </Center>
 
