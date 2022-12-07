@@ -113,7 +113,7 @@ const Home = ({ teamsData }) => {
             <InfoIcon boxSize="3rem" />
             <Text textAlign="center" fontSize="1.5rem">Spots in total: 30</Text>
           </HStack>
-          <Text textAlign="center" fontSize="1.5rem" lineHeight="2.5rem">You can refresh the page<br />once you have opted <span style={{ backgroundColor: '#B2F5EA', color: '#000', borderRadius: '9999px', padding: '0.4rem' }}>for the spot</span></Text>
+          <Text textAlign="center" fontSize="1.5rem" lineHeight="2.5rem">You can refresh the page<br />once you have opted <span style={{ backgroundColor: '#B2F5EA', color: '#000', borderRadius: '9999px', padding: '0.4rem', paddingLeft: '0.6rem', paddingRight: '0.6rem' }}>for the spot</span></Text>
         </VStack>
       </Center>
 
