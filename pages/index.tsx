@@ -120,7 +120,7 @@ const Home = ({ teamsData }) => {
       <Center mt="1rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
           {Object.keys(Teams).map((key: string) => (
-            <VStack>
+            <VStack backgroundColor="#111827" padding="1rem" rounded="lg" borderWidth="2px" borderColor="#374151">
               <HStack spacing="1rem">
                 <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
                   <NumberInputField width="9rem" height="5.5rem" textAlign="center" fontSize="1.8rem" />
