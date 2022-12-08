@@ -113,11 +113,11 @@ const Home = ({ teamsData }) => {
             <InfoIcon boxSize="3rem" />
             <Text textAlign="center" fontSize="1.5rem">Spots in total: 30</Text>
           </HStack>
-          <Text textAlign="center" fontSize="1.5rem" lineHeight="2.5rem">You can refresh the page<br />once you have opted <span style={{ backgroundColor: '#B2F5EA', color: '#000', borderRadius: '9999px', padding: '0.4rem', paddingLeft: '0.6rem', paddingRight: '0.6rem' }}>for the spot</span></Text>
+          <Text textAlign="center" fontSize="1.5rem" lineHeight="2.5rem">You can refresh the page<br />once you have opted<br /><span style={{ backgroundColor: '#B2F5EA', color: '#000', borderRadius: '9999px', padding: '0.4rem', paddingLeft: '0.8rem', paddingRight: '0.8rem' }}>for the spot</span></Text>
         </VStack>
       </Center>
 
-      <Center mt="1rem">
+      <Center mt="2rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
           {Object.keys(Teams).map((key: string) => (
             <VStack backgroundColor="#111827" padding="1rem" rounded="lg" borderWidth="2px" borderColor="#374151">
