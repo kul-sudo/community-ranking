@@ -4,7 +4,7 @@ import Teams from '../lib/teams.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
 import { useState } from 'react'
-import { InfoIcon } from '@chakra-ui/icons'
+import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 
 type Team = {
   name: string,
@@ -42,7 +42,6 @@ const getSpot = (sumOfVotes: number, numberOfVotes: number) => {
   const predefined = sumOfVotes / numberOfVotes
   return isNaN(predefined) ? 0: predefined
 }
-
 
 const Home = ({ teamsData }) => {
   const toast = useToast()
@@ -120,13 +119,13 @@ const Home = ({ teamsData }) => {
       <Center mt="2rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
           {Object.keys(Teams).map((key: string) => (
-            <VStack backgroundColor="#111827" padding="1rem" rounded="lg" borderWidth="2px" borderColor="#374151">
+            <VStack backgroundColor="#111827" padding="1rem" paddingX="1.5rem" rounded="lg" borderWidth="2px" borderColor="#374151">
               <HStack spacing="1rem">
                 <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
                   <NumberInputField width="9rem" height="5.5rem" textAlign="center" fontSize="1.8rem" />
                   <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
+                    <NumberDecrementStepper children={<TriangleUpIcon />}/>
+                    <NumberIncrementStepper children={<TriangleDownIcon />} />
                   </NumberInputStepper>
                 </NumberInput>
                 <VStack spacing="0.5rem">
