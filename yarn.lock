@@ -2219,9 +2219,9 @@ core-js-pure@^3.25.1:
   integrity sha512-VVXcDpp/xJ21KdULRq/lXdLzQAtX7+37LzpyfFM973il0tWSsDEoyzG38G14AjTpK9VTfiNM9jnFauq/CpaWGQ==
 
 cosmiconfig-typescript-loader@^4.0.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.2.0.tgz#a3cfd0dd9dac86be7dbe5f53eb46ad03abdf417b"
-  integrity sha512-NkANeMnaHrlaSSlpKGyvn2R4rqUDeE/9E5YHx+b4nwo0R8dZyAqcih8/gxpCZvqWP9Vf6xuLpMSzSgdVEIM78g==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.3.0.tgz#c4259ce474c9df0f32274ed162c0447c951ef073"
+  integrity sha512-NTxV1MFfZDLPiBMjxbHRwSh5LaLcPMwNdCutmnHJCKoVnlvldPWlllonKwrsRJ5pYZBIBGRWWU2tfvzxgeSW5Q==
 
 cosmiconfig@^7.0.0:
   version "7.1.0"
@@ -2814,9 +2814,9 @@ focus-lock@^0.11.2:
     tslib "^2.0.3"
 
 framer-motion@^7.6.5:
-  version "7.6.19"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-7.6.19.tgz#a24ea890881374f4184be5abb773ce8e4a0d3734"
-  integrity sha512-U+ogwGwNw6Y+pdq6GZB5xvnvLDlq3FTmcKaG5MCUjXuqRLrjKbKTqN4iwZISv3ajwUfgNHM6+tu31LRbYfF9YQ==
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-7.7.0.tgz#629f53f1e74e32907618666365649a977741b5f2"
+  integrity sha512-2QBUM+LanbQz6g6OCvkOjyI1nvvKNEtaBIr+LO4vK1hN88T2Jh7jIZmL/tdKb2NLnbhJwcfWGwSijrG36sbgcQ==
   dependencies:
     "@motionone/dom" "10.13.1"
     framesync "6.1.2"
@@ -2968,9 +2968,9 @@ global-prefix@^1.0.1:
     which "^1.2.14"
 
 globals@^13.15.0:
-  version "13.18.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.18.0.tgz#fb224daeeb2bb7d254cd2c640f003528b8d0c1dc"
-  integrity sha512-/mR4KI8Ps2spmoc0Ulu9L7agOF0du1CZNQ3dke8yItYlyKNmGrkONemBbd6V8UTc1Wgcqn21t3WYB7dbRmh6/A==
+  version "13.19.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.19.0.tgz#7a42de8e6ad4f7242fbcca27ea5b23aca367b5c8"
+  integrity sha512-dkQ957uSRWHw7CFXLUtUHQI3g3aWApYhfNR2O6jn/907riyTYKVBmxYVROkBcY614FSSeSJh7Xm7SrUWCxvJMQ==
   dependencies:
     type-fest "^0.20.2"
 
