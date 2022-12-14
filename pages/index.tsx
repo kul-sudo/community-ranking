@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, useToast, Breadcrumb, BreadcrumbItem, useDisclosure, AlertDialogBody, AlertDialogCloseButton, Center, useColorModeValue, useColorMode, IconButton } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, useToast, Breadcrumb, BreadcrumbItem, useDisclosure, AlertDialogBody, AlertDialogCloseButton, Center, IconButton, DarkMode, useColorModeValue, useColorMode } from '@chakra-ui/react'
 import Teams from '../lib/teams.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
@@ -122,28 +122,34 @@ const Home = ({ teamsData }) => {
       <Center mt="2rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
           {Object.keys(Teams).map((key: string) => (
-            <VStack backgroundColor="#111827" padding="2rem" paddingX="1.5rem" rounded="lg" borderWidth="2px" borderColor="#374151">
-              <HStack spacing="1rem">
+            <VStack backgroundColor={useColorModeValue("#1a202c", "#111827")} padding="2rem" paddingX="1.5rem" rounded="lg" borderWidth="2px" borderColor="#374151">
+              <HStack spacing="0.1rem">
                 <VStack spacing="1rem">
-                  <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
-                    <NumberInputField width="9rem" height="4rem" textAlign="center" fontSize="1.8rem" />
-                    <NumberInputStepper>
-                      <NumberDecrementStepper children={<TriangleUpIcon />} />
-                      <NumberIncrementStepper children={<TriangleDownIcon />} />
-                    </NumberInputStepper>
-                  </NumberInput>
-                  <Button variant="outline" colorScheme="teal" onClick={() => {
-                    setTeamToVote(key)
-                    onOpen()
-                  }}>Vote</Button>
+                  <DarkMode>
+                    <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
+                      <NumberInputField width="9rem" height="4rem" textAlign="center" fontSize="1.8rem" />
+                      <NumberInputStepper>
+                        <NumberDecrementStepper children={<TriangleUpIcon />} />
+                        <NumberIncrementStepper children={<TriangleDownIcon />} />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </DarkMode>
+                  <DarkMode>
+                    <Button variant="outline" colorScheme="teal" onClick={() => {
+                      setTeamToVote(key)
+                      onOpen()
+                    }}>Vote</Button>
+                  </DarkMode>
                 </VStack>
-                <VStack spacing="0.5rem">
+                <VStack spacing="0.4rem"> 
+                  <Center width="7rem">
                     <Image
                       src={Teams[key].logo}
                       draggable={false}
                       width="3.5rem"
                       height="auto"
-                      />
+                    />
+                  </Center>
                   <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600">{Teams[key].name}</Text>
                 </VStack>
               </HStack>
