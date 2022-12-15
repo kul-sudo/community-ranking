@@ -75,7 +75,7 @@ const Home = ({ teamsData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <IconButton colorScheme={useColorModeValue('teal', 'blue')} borderTopLeftRadius="0" borderTopRightRadius="0" borderBottomLeftRadius="0" borderBottomRightRadius="25%" onClick={toggleColorMode} icon={useColorModeValue(<MoonIcon />, <SunIcon />)} />
+      <IconButton position="fixed" top="0" left="0" colorScheme={useColorModeValue('teal', 'blue')} borderTopLeftRadius="0" borderTopRightRadius="0" borderBottomLeftRadius="0" borderBottomRightRadius="25%" onClick={toggleColorMode} icon={useColorModeValue(<MoonIcon />, <SunIcon />)} />
 
       <AlertDialog
         isCentered
