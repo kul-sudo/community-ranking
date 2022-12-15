@@ -122,7 +122,7 @@ const Home = ({ teamsData }) => {
       <Center mt="2rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
           {Object.keys(Teams).map((key: string) => (
-            <VStack backgroundColor={useColorModeValue("#1a202c", "#111827")} padding="2rem" paddingX="1.5rem" rounded="lg" borderWidth="2px" borderColor="#374151">
+            <VStack backgroundColor={useColorModeValue("#1a202c", "#111827")} padding="2rem" paddingX="1.5rem" rounded="lg" borderWidth={useColorModeValue('0px', '2px')} borderColor="#374151">
               <HStack spacing="0.1rem">
                 <VStack spacing="1rem">
                   <DarkMode>
