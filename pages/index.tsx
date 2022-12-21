@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, useDisclosure, useToast, Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, useDisclosure, useToast, Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent, Input, Flex } from '@chakra-ui/react'
 import Teams from '../lib/teams.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
@@ -46,7 +46,10 @@ const getSpot = (sumOfVotes: number, numberOfVotes: number) => {
 const Home = ({ teamsData }) => {
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const [teamToVote, setTeamToVote] = useState(undefined)
+  const [searchTeam, setSearchTeam] = useState('')
+  const handleChange = event => setSearchTeam(event.target.value)
 
   Teams.sort((a: Team, b: Team) => {
     const getSpotA = getSpot(teamsData[a.name].sumOfVotes, teamsData[a.name].numberOfVotes)
@@ -116,42 +119,48 @@ const Home = ({ teamsData }) => {
         </VStack>
       </Center>
 
+      <Center>
+        <Input width="22.4rem" mt="2rem" placeholder="Enter the team name" value={searchTeam} onChange={handleChange} />
+      </Center>
+
       <Center mt="2rem">
         <Grid gridAutoFlow="row" rowGap="2rem">
-          {Object.keys(Teams).map((key: string) => (
-            <VStack backgroundColor="#111827" padding="2rem" paddingX="1.5rem" rounded="lg" borderWidth='2px' borderColor="#374151">
-              <HStack spacing="0.1rem">
-                <VStack spacing="1rem">
-                  <DarkMode>
-                    <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
-                      <NumberInputField width="9rem" height="4rem" textAlign="center" fontSize="1.8rem" />
-                      <NumberInputStepper>
-                        <NumberDecrementStepper children={<TriangleUpIcon />} />
-                        <NumberIncrementStepper children={<TriangleDownIcon />} />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </DarkMode>
-                  <DarkMode>
-                    <Button variant="outline" colorScheme="teal" onClick={() => {
-                      setTeamToVote(key)
-                      onOpen()
-                    }}>Vote</Button>
-                  </DarkMode>
-                </VStack>
-                <VStack spacing="0.4rem"> 
-                  <Center width="7rem">
-                    <Image
-                      src={Teams[key].logo}
-                      draggable={false}
-                      width="3.5rem"
-                      height="auto"
-                    />
-                  </Center>
-                  <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600">{Teams[key].name}</Text>
-                </VStack>
-              </HStack>
-            </VStack>
-          ))}
+          {Object.keys(Teams).map((key: string) => {
+            if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
+              return (
+                <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="7rem" width="35rem" rounded="lg" borderWidth="2px" borderColor="#374151">
+                  <HStack>
+                    <HStack spacing="0.4rem" position="absolute" left="5rem">
+                      <Image
+                        src={Teams[key].logo}
+                        draggable={false}
+                        width="3rem"
+                        height="auto"
+                      />
+                      <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize="0.95rem">{Teams[key].name}</Text>
+                    </HStack>
+                    <HStack spacing="1rem" position="absolute" right="5rem">
+                      <DarkMode>
+                        <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
+                          <NumberInputField width="6rem" height="3.2rem" textAlign="center" fontSize="1.5rem" />
+                          <NumberInputStepper>
+                            <NumberDecrementStepper children={<TriangleUpIcon />} />
+                            <NumberIncrementStepper children={<TriangleDownIcon />} />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </DarkMode>
+                      <DarkMode>
+                        <Button width="4.356rem" variant="outline" colorScheme="teal" onClick={() => {
+                          setTeamToVote(key)
+                          onOpen()
+                        }}>Vote</Button>
+                      </DarkMode>
+                    </HStack>
+                  </HStack>
+                </HStack>
+              )
+            }
+          })}
         </Grid>
       </Center>
     </>
