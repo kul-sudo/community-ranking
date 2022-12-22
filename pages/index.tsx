@@ -95,7 +95,18 @@ const Home = ({ teamsData }) => {
           <AlertDialogFooter>
             <Button variant="outline" colorScheme="teal" onClick={() => {
               onClose()
-              writeTeamData(document.getElementById(`${Teams[teamToVote].name}-team-name`).innerText, parseInt(document.getElementById(`${Teams[teamToVote].name}-input`).value))
+              const parsedInput = document.getElementById(`${Teams[teamToVote].name}-input`).value
+              if (parsedInput === '') {
+                toast({
+                  title: 'Error',
+                  description: 'There is no number in the input',
+                  status: 'error',
+                  duration: 5000,
+                  isClosable: true
+                })
+                return
+              }
+              writeTeamData(Teams[teamToVote].name, parseInt(parsedInput))
               toast({
                 title: 'Success',
                 description: 'Your vote has been included',
