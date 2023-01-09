@@ -17,7 +17,8 @@ type Config = {
 
 const breakpoints: Breakpoints = {
   '1100px': '1100px',
-  '741px': '741px'
+  '741px': '741px',
+  '446px': '446px'
 }
 
 const styles = {

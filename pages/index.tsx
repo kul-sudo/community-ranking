@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, useDisclosure, useToast, Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent, Input, Flex } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, Input, Hide, useDisclosure, useToast } from '@chakra-ui/react'
+import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import Teams from '../lib/teams.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
 import { useState } from 'react'
-import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 
 type Team = {
   name: string,
@@ -118,7 +118,7 @@ const Home = ({ teamsData }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <Text fontSize="4rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
+      <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
       <Center>
         <VStack mt="1rem" spacing={2}>
@@ -131,48 +131,49 @@ const Home = ({ teamsData }) => {
       </Center>
 
       <Center>
-        <Input width="22.4rem" mt="2rem" placeholder="Enter the team name" value={searchTeam} onChange={handleChange} />
-      </Center>
-
-      <Center mt="2rem">
-        <Grid gridAutoFlow="row" rowGap="2rem">
-          {Object.keys(Teams).map((key: string) => {
-            if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
-              return (
-                <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="7rem" width={{ base: '25rem', '1100px': '30rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
-                  <HStack>
-                    <HStack spacing="0.5rem" position="absolute" left="2.5rem">
-                      <Image
-                        src={Teams[key].logo}
-                        draggable={false}
-                        width={{ base: '2.5rem', '1100px': '3rem' }}
-                        height="auto"
-                      />
-                      <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.95rem' }}>{Teams[key].name}</Text>
-                    </HStack>
-                    <HStack spacing="1rem" position="absolute" right="2.5rem">
-                      <DarkMode>
-                        <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
-                          <NumberInputField width={{ base: '5rem', '1100px': '6rem' }} height={{ base: '2.5rem', '1100px': '3.2rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.5rem' }} />
-                          <NumberInputStepper>
-                            <NumberDecrementStepper children={<TriangleUpIcon />} />
-                            <NumberIncrementStepper children={<TriangleDownIcon />} />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </DarkMode>
-                      <DarkMode>
-                        <Button width={{ base: '4.356rem', '1100px': '4rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
-                          setTeamToVote(key)
-                          onOpen()
-                        }}>Vote</Button>
-                      </DarkMode>
+        <VStack spacing="2rem">
+          <Input width="22.4rem" mt="2rem" placeholder="Enter the team name" value={searchTeam} onChange={handleChange} />
+          <Grid mt="2rem" gridAutoFlow="row" rowGap="2rem">
+            {Object.keys(Teams).map((key: string) => {
+              if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
+                return (
+                  <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '446px': '27rem', '1100px': '27.5rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                    <HStack>
+                      <HStack spacing="0.4rem" position="absolute" left="2.5rem">
+                        <Image
+                          src={Teams[key].logo}
+                          draggable={false}
+                          width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                          height="auto"
+                        />
+                        <Hide breakpoint="(max-width: 446px)">
+                          <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Teams[key].name}</Text>
+                        </Hide>
+                      </HStack>
+                      <HStack spacing="1rem" position="absolute" right="2.5rem">
+                        <DarkMode>
+                          <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
+                            <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
+                            <NumberInputStepper>
+                              <NumberDecrementStepper children={<TriangleUpIcon />} />
+                              <NumberIncrementStepper children={<TriangleDownIcon />} />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </DarkMode>
+                        <DarkMode>
+                          <Button width={{ base: '4.356rem', '1100px': '4.3rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
+                            setTeamToVote(key)
+                            onOpen()
+                          }}>Vote</Button>
+                        </DarkMode>
+                      </HStack>
                     </HStack>
                   </HStack>
-                </HStack>
-              )
-            }
-          })}
-        </Grid>
+                )
+              }
+            })}
+          </Grid>
+        </VStack>
       </Center>
     </>
   )
