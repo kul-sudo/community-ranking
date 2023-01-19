@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, ThemeConfig } from '@chakra-ui/react'
 import { mode, GlobalStyleProps } from '@chakra-ui/theme-tools'
 import '@fontsource/quicksand/600.css'
 
@@ -8,11 +8,6 @@ type Breakpoints = {
 
 type Fonts = {
   body: string;
-}
-
-type Config = {
-  initialColorMode: string;
-  useSystemColorMode: boolean;
 }
 
 const breakpoints: Breakpoints = {
@@ -33,7 +28,7 @@ const fonts: Fonts = {
   body: `'Quicksand', sans-serif`
 }
 
-const config: Config = {
+const config: ThemeConfig = {
   initialColorMode: 'dark',
   useSystemColorMode: true,
 }
