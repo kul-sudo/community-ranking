@@ -5,7 +5,7 @@ import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -83,10 +83,12 @@ const Info = () => {
         <ModalContent>
           <ModalHeader>Info</ModalHeader>
           <ModalBody pb="2rem">
-            <OrderedList textAlign="center" fontSize="1.3rem">
-              <ListItem>Vote for the spots of the teams!</ListItem>
+            <Center>
+              <Text fontSize="1.5rem" textAlign="center" color="teal.200">Vote for the spots of teams and players!</Text>
+            </Center>
+            <OrderedList mt="1rem" textAlign="center" fontSize="1.3rem">
               <ListItem>You have 30 spots in total.</ListItem>
-              <ListItem>The teams are sorted by the arithmetic mean.</ListItem>
+              <ListItem>The teams/players are sorted by the arithmetic mean.</ListItem>
               <ListItem>The page reloads once you have voted.</ListItem>
             </OrderedList>
           </ModalBody>
