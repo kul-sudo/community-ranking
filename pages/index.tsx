@@ -6,10 +6,18 @@ import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
 import { useEffect, useState } from 'react'
-import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import create from 'zustand'
+import { persist } from 'zustand/middleware'
 
-const tabIndexAtom = atomWithStorage('communityRankingTab', 0)
+let useTabIndex = set => ({
+  number: 0,
+  changeTabIndex: index => set(state => ({
+    number: index
+  }))
+})
+
+useTabIndex = persist(useTabIndex, { name: 'communityRankingTab' })
+useTabIndex = create(useTabIndex)
 
 type Team = {
   name: string,
@@ -112,7 +120,6 @@ const Home = ({ teamsData, playersData }) => {
   const handleTeamNameChange = event => setSearchTeam(event.target.value)
   const handlePlayerNameChange = event => setSearchPlayerName(event.target.value)
 
-
   Teams.sort((a: Team, b: Team) => {
     const getSpotA = getSpot(teamsData[a.name].sumOfVotes, teamsData[a.name].numberOfVotes)
     const getSpotB = getSpot(teamsData[b.name].sumOfVotes, teamsData[b.name].numberOfVotes)
@@ -149,10 +156,11 @@ const Home = ({ teamsData, playersData }) => {
     playerSpots.push(key.name)
   })
 
-  const [tabIndex, setTabIndex] = useAtom(tabIndexAtom)
+  const changeTabIndex = useTabIndex(state => state.changeTabIndex)
+  const tabIndex = useTabIndex(state => state.number)
   
   const handleTabsChange = index => {
-    setTabIndex(index)
+    changeTabIndex(index)
   }
 
   return (
@@ -330,7 +338,7 @@ const Home = ({ teamsData, playersData }) => {
                           </HStack>
                           <HStack spacing="1rem" position="absolute" right="2.5rem">
                             <DarkMode>
-                              <NumberInput id={`${Players[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={playerSpots.indexOf(Players[key].name)+1} min={1} max={24}>
+                              <NumberInput id={`${Players[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={playerSpots.indexOf(Players[key].name)+1} min={1} max={30}>
                                 <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
                                 <NumberInputStepper>
                                   <NumberDecrementStepper children={<TriangleUpIcon />} />
