@@ -5,7 +5,7 @@ import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -377,11 +377,6 @@ const Home = ({ teamsData, playersData }) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      {((((document.getElementById('teamsList')?.children.length < 1)) - 1) || (((document.getElementById('playersList')?.children.length < 1)))) && (
-        <Center mt="1rem">
-          <Text>{`No ${tabIndex === 0 ? 'teams' : 'players'} found`}</Text>
-        </Center>
-      )}
     </>
   )
 }
