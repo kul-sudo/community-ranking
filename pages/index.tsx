@@ -274,14 +274,14 @@ const Home = ({ teamsData, playersData }) => {
         <TabPanels>
           <TabPanel>
             <Center>
-              <VStack spacing="2rem">
+              <VStack spacing="2rem" id="teamsList">
                 <Input mt="0.5rem" width="22.4rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
                 {Object.keys(Teams).map((key: string) => {
                   if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
                     return (
                       <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '600px': '36rem', '1100px': '36rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
-                          <HStack spacing="1rem" position="absolute" left="10%">
+                          <HStack spacing="1rem" position="absolute" left={{ base: '14%', '600px': '10%' }}>
                             <Image
                               src={Teams[key].logo}
                               draggable={false}
@@ -328,7 +328,7 @@ const Home = ({ teamsData, playersData }) => {
           </TabPanel>
           <TabPanel>
             <Center>
-              <VStack spacing="2rem">
+              <VStack spacing="2rem" id="playersList">
                 <Input mt="0.5rem" width="22.4rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
                 {Object.keys(Players).map((key: string) => {
                   if (Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
@@ -364,7 +364,6 @@ const Home = ({ teamsData, playersData }) => {
                               }}>Vote</Button>
                             </DarkMode>
                           </HStack>
-
                         </HStack>
                       </HStack>
                     )
@@ -376,7 +375,11 @@ const Home = ({ teamsData, playersData }) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-
+      {((((document.getElementById('teamsList')?.children.length < 1)) - 1) || (((document.getElementById('playersList')?.children.length < 1)))) && (
+        <Center mt="1rem">
+          <Text>{`No ${tabIndex === 0 ? 'teams' : 'players'} found`}</Text>
+        </Center>
+      )}
     </>
   )
 }
