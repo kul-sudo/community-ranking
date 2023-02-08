@@ -1,122 +1,152 @@
 [
   {
     "name": "Vitality",
-    "logo": "https://img-cdn.hltv.org/teamlogo/GAlByJtDTnkgbb9p_71SUL.png?ixlib=java-2.1.0&w=100&s=ddc5952ae492cbefb10fbe64471486b5"
+    "logo": "https://img-cdn.hltv.org/teamlogo/GAlByJtDTnkgbb9p_71SUL.png?ixlib=java-2.1.0&w=100&s=ddc5952ae492cbefb10fbe64471486b5",
+    "players": ["dupreeh", "Magisk", "Spinx", "ZywOo", "apEX"]
   },
   {
     "name": "FaZe",
-    "logo": "https://img-cdn.hltv.org/teamlogo/SMhzsxzbkIrgqCOOKGRXlW.svg?ixlib=java-2.1.0&s=e6a9ce0345c7d703e5eaac14307f69aa"
+    "logo": "https://img-cdn.hltv.org/teamlogo/SMhzsxzbkIrgqCOOKGRXlW.svg?ixlib=java-2.1.0&s=e6a9ce0345c7d703e5eaac14307f69aa",
+    "players": ["karrigan", "ropz", "Twistzz", "rain", "broky"]
   },
   {
     "name": "Liquid",
-    "logo": "https://img-cdn.hltv.org/teamlogo/JMeLLbWKCIEJrmfPaqOz4O.svg?ixlib=java-2.1.0&s=c02caf90234d3a3ebac074c84ba1ea62"
+    "logo": "https://img-cdn.hltv.org/teamlogo/JMeLLbWKCIEJrmfPaqOz4O.svg?ixlib=java-2.1.0&s=c02caf90234d3a3ebac074c84ba1ea62",
+    "players": ["EliGE", "nitr0", "oSee", "YEKINDAR", "NAF"]
   },
   {
     "name": "Natus Vincere",
-    "logo": "https://img-cdn.hltv.org/teamlogo/9iMirAi7ArBLNU8p3kqUTZ.svg?ixlib=java-2.1.0&s=4dd8635be16122656093ae9884675d0c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/9iMirAi7ArBLNU8p3kqUTZ.svg?ixlib=java-2.1.0&s=4dd8635be16122656093ae9884675d0c",
+    "players": ["s1mple", "npl", "electronic", "Perfecto", "b1t"]
   },
   {
     "name": "G2",
-    "logo": "https://img-cdn.hltv.org/teamlogo/zFLwAELOD15BjJSDMMNBWQ.png?ixlib=java-2.1.0&w=100&s=88aeba1564bc27de69fb2302e47e1a7c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/zFLwAELOD15BjJSDMMNBWQ.png?ixlib=java-2.1.0&w=100&s=88aeba1564bc27de69fb2302e47e1a7c",
+    "players": ["m0NESY", "NiKo", "huNter-", "HooXi", "jks"]
   },
   {
     "name": "Cloud9",
-    "logo": "https://img-cdn.hltv.org/teamlogo/bEgST6XoNV4ZdenRKzCQyl.svg?ixlib=java-2.1.0&s=bd9b10a8dfe7b3640103745687389e3c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/bEgST6XoNV4ZdenRKzCQyl.svg?ixlib=java-2.1.0&s=bd9b10a8dfe7b3640103745687389e3c",
+    "players": ["Ax1Le", "nafany", "buster", "sh1ro", "H0bbit"]
   },
   {
     "name": "Outsiders",
-    "logo": "https://img-cdn.hltv.org/teamlogo/K15IzjKuVPxnoWr3J3-tJ7.png?ixlib=java-2.1.0&w=100&s=a5a1e79bacde74248408e68f71e8591c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/K15IzjKuVPxnoWr3J3-tJ7.png?ixlib=java-2.1.0&w=100&s=a5a1e79bacde74248408e68f71e8591c",
+    "players": ["Jame", "KaiRON-", "Qikert", "FL1T", "fame"]
   },
   {
     "name": "FURIA",
-    "logo": "https://img-cdn.hltv.org/teamlogo/mvNQc4csFGtxXk5guAh8m1.svg?ixlib=java-2.1.0&s=11e5056829ad5d6c06c5961bbe76d20c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/mvNQc4csFGtxXk5guAh8m1.svg?ixlib=java-2.1.0&s=11e5056829ad5d6c06c5961bbe76d20c",
+    "players": ["arT", "yuurih", "KSCERATO", "saffee", "drop"]
   },
   {
     "name": "Heroic",
-    "logo": "https://img-cdn.hltv.org/teamlogo/ffSPDr5mbWSKI4yruyfVtx.svg?ixlib=java-2.1.0&s=2b0a91cf4a31e6eec7a5928b10465f32"
+    "logo": "https://img-cdn.hltv.org/teamlogo/ffSPDr5mbWSKI4yruyfVtx.svg?ixlib=java-2.1.0&s=2b0a91cf4a31e6eec7a5928b10465f32",
+    "players": ["cadiaN", "stavn", "TeSeS", "jabbi", "sjuush"]
   },
   {
     "name": "MOUZ",
-    "logo": "https://img-cdn.hltv.org/teamlogo/RfR1zmFJ0eP08VmFb6UOu3.png?ixlib=java-2.1.0&w=100&s=b1bf115f05eacdf004c193d48338ff11"
+    "logo": "https://img-cdn.hltv.org/teamlogo/RfR1zmFJ0eP08VmFb6UOu3.png?ixlib=java-2.1.0&w=100&s=b1bf115f05eacdf004c193d48338ff11",
+    "players": ["dexter", "frozen", "JDC", "torzsi", "xertioN"]
   },
   {
     "name": "Ninjas in Pyjamas",
-    "logo": "https://img-cdn.hltv.org/teamlogo/mbY2YeFKUAbL9NyO6ab7-c.png?ixlib=java-2.1.0&w=100&s=95466e17ba2af2a72ec28bd1af66ceee"
+    "logo": "https://img-cdn.hltv.org/teamlogo/mbY2YeFKUAbL9NyO6ab7-c.png?ixlib=java-2.1.0&w=100&s=95466e17ba2af2a72ec28bd1af66ceee",
+    "players": ["Aleksib", "headtr1ck", "Brollan", "REZ", "k0nfig"]
   },
   {
     "name": "Spirit",
-    "logo": "https://img-cdn.hltv.org/teamlogo/ywdn4tmAvXfllLeV2SkkvF.png?ixlib=java-2.1.0&w=100&s=e441b77b1cafbca20ba9f667caca56f4"
+    "logo": "https://img-cdn.hltv.org/teamlogo/ywdn4tmAvXfllLeV2SkkvF.png?ixlib=java-2.1.0&w=100&s=e441b77b1cafbca20ba9f667caca56f4",
+    "players": ["magixx", "w0nderful", "s1ren", "chopper", "Patsi"]
   },
   {
     "name": "ENCE",
-    "logo": "https://img-cdn.hltv.org/teamlogo/-X8NoyWC_1gYqUHvZqcpkc.svg?ixlib=java-2.1.0&s=85bb9daa6f846fa097c5942f2565fdb8"
+    "logo": "https://img-cdn.hltv.org/teamlogo/-X8NoyWC_1gYqUHvZqcpkc.svg?ixlib=java-2.1.0&s=85bb9daa6f846fa097c5942f2565fdb8",
+    "players": ["Snappi", "valde", "Maden", "dycha", "SunPayus"]
   },
   {
     "name": "OG",
-    "logo": "https://img-cdn.hltv.org/teamlogo/VZHA__RIJY6gisB-l6HfiO.png?ixlib=java-2.1.0&w=100&s=2ef53aec0eec6572ba50ed419222d4e5"
+    "logo": "https://img-cdn.hltv.org/teamlogo/VZHA__RIJY6gisB-l6HfiO.png?ixlib=java-2.1.0&w=100&s=2ef53aec0eec6572ba50ed419222d4e5",
+    "players": ["nexa", "NEOFRAG", "flameZ", "degster", "F1KU"]
   },
   {
     "name": "BIG",
-    "logo": "https://img-cdn.hltv.org/teamlogo/yQB6cm3KZ_BcyrgppBQMjc.svg?ixlib=java-2.1.0&s=06825290bfb61c9f8467f5c323f51974"
+    "logo": "https://img-cdn.hltv.org/teamlogo/yQB6cm3KZ_BcyrgppBQMjc.svg?ixlib=java-2.1.0&s=06825290bfb61c9f8467f5c323f51974",
+    "players": ["tabseN", "syrsoN", "k1to", "faveN", "Krimbo"]
   },
   {
     "name": "Astralis",
-    "logo": "https://img-cdn.hltv.org/teamlogo/9bgXHp-oh1oaXr7F0mTGmd.svg?ixlib=java-2.1.0&s=f567161ab183001be33948b98c4b2067"
+    "logo": "https://img-cdn.hltv.org/teamlogo/9bgXHp-oh1oaXr7F0mTGmd.svg?ixlib=java-2.1.0&s=f567161ab183001be33948b98c4b2067",
+    "players": ["dev1ce", "Buzz", "gla1ve", "Xyp9x", "blameF"]
   },
   {
     "name": "fnatic",
-    "logo": "https://img-cdn.hltv.org/teamlogo/dLtWEdSV58lIX1amAFggy0.svg?ixlib=java-2.1.0&s=f24d0a7b3ef24ed57184a51d35202b4e"
+    "logo": "https://img-cdn.hltv.org/teamlogo/dLtWEdSV58lIX1amAFggy0.svg?ixlib=java-2.1.0&s=f24d0a7b3ef24ed57184a51d35202b4e",
+    "players": ["KRIMZ", "mezii", "nicoodoz", "roeJ", "FASHR"]
   },
   {
     "name": "Complexity",
-    "logo": "https://img-cdn.hltv.org/teamlogo/0-i_bEjrf3v4eYqaG0Bix7.svg?ixlib=java-2.1.0&s=4eecbec277f018772a9b92c22da1a459"
+    "logo": "https://img-cdn.hltv.org/teamlogo/0-i_bEjrf3v4eYqaG0Bix7.svg?ixlib=java-2.1.0&s=4eecbec277f018772a9b92c22da1a459",
+    "players": ["JT", "floppy", "hallzerk", "Grim", "FaNg"]
   },
   {
     "name": "Eternal Fire",
-    "logo": "https://img-cdn.hltv.org/teamlogo/MoSNHyDSjZ3EaLpeSA9_oN.png?ixlib=java-2.1.0&w=100&s=9a7e6dfb4f561ff7756d1ca9a068bf46"
+    "logo": "https://img-cdn.hltv.org/teamlogo/MoSNHyDSjZ3EaLpeSA9_oN.png?ixlib=java-2.1.0&w=100&s=9a7e6dfb4f561ff7756d1ca9a068bf46",
+    "players": ["MAJ3R", "XANTARES", "Calyx", "imoRR", "xfl0ud"]
   },
   {
     "name": "Imperial",
-    "logo": "https://img-cdn.hltv.org/teamlogo/WF5P55R5fxcmhoew6vHZQr.png?ixlib=java-2.1.0&w=100&s=69a1bfb54d6350db4a0b18ff87a96dcc"
+    "logo": "https://img-cdn.hltv.org/teamlogo/WF5P55R5fxcmhoew6vHZQr.png?ixlib=java-2.1.0&w=100&s=69a1bfb54d6350db4a0b18ff87a96dcc",
+    "players": ["FalleN", "boltz", "JOTA", "chelo", "VINI"]
   },
   {
     "name": "paiN",
-    "logo": "https://img-cdn.hltv.org/teamlogo/x7znFH8_QjLXOQRyR2y7Xp.png?ixlib=java-2.1.0&w=100&s=9d82f86f4573bab52b77611afcddb595"
+    "logo": "https://img-cdn.hltv.org/teamlogo/x7znFH8_QjLXOQRyR2y7Xp.png?ixlib=java-2.1.0&w=100&s=9d82f86f4573bab52b77611afcddb595",
+    "players": ["NEKIZ", "hardzao", "biguzera", "skullz", "zevy"]
   },
   {
     "name": "Evil Geniuses",
-    "logo": "https://img-cdn.hltv.org/teamlogo/p6OXTVsTFEhOcbTJ8gmuP6.png?invert=true&ixlib=java-2.1.0&sat=-100&w=100&s=2e51eb9aef71e50ef46e5fc812876d18"
+    "logo": "https://img-cdn.hltv.org/teamlogo/p6OXTVsTFEhOcbTJ8gmuP6.png?invert=true&ixlib=java-2.1.0&sat=-100&w=100&s=2e51eb9aef71e50ef46e5fc812876d18",
+    "players": ["autimatic", "Brehze", "neaLaN", "wiz", "HexT"]
   },
   {
     "name": "Movistar Riders",
-    "logo": "https://img-cdn.hltv.org/teamlogo/Y37ZjhQhf-74eg44YCXe_m.png?ixlib=java-2.1.0&w=100&s=07c7f78adddce9861546f8facb29e5ba"
+    "logo": "https://img-cdn.hltv.org/teamlogo/Y37ZjhQhf-74eg44YCXe_m.png?ixlib=java-2.1.0&w=100&s=07c7f78adddce9861546f8facb29e5ba",
+    "players": ["alex", "mopoz", "sausol", "dav1g", "Martinez"]
   },
   {
     "name": "Bad News Eagles",
-    "logo": "https://img-cdn.hltv.org/teamlogo/ohLs36jqZnmOpBFWDjk5Az.png?ixlib=java-2.1.0&w=100&s=78facebb96c3a0938d8355c27420e67c"
+    "logo": "https://img-cdn.hltv.org/teamlogo/ohLs36jqZnmOpBFWDjk5Az.png?ixlib=java-2.1.0&w=100&s=78facebb96c3a0938d8355c27420e67c",
+    "players": ["rigoN", "SENER1", "juanflatroo", "sinnopsyy", "gxx-"]
   },
   {
-    "name": "00NATION",
-    "logo": "https://img-cdn.hltv.org/teamlogo/Od-bsmsaAdzX8YM5nwhI-I.png?ixlib=java-2.1.0&w=100&s=8f6a63f99fb1599667312b0f2c31f88f"
+    "name": "Copenhagen Flames",
+    "logo": "https://img-cdn.hltv.org/teamlogo/o9gWbZqKaYgDJL5ttGKuqQ.png?ixlib=java-2.1.0&w=100&s=9937572ba28748784a4d64e993eaec4c",
+    "players": ["raalz", "b0RUP", "TMB", "birdfromsky", "regali"]
   },
   {
     "name": "Sprout",
-    "logo": "https://img-cdn.hltv.org/teamlogo/Ut8iEF66VCIbZGniMYn5jL.svg?ixlib=java-2.1.0&s=e6ae4904320fcbb566d098641e22a474"
+    "logo": "https://img-cdn.hltv.org/teamlogo/Ut8iEF66VCIbZGniMYn5jL.svg?ixlib=java-2.1.0&s=e6ae4904320fcbb566d098641e22a474",
+    "players": ["XELLOW", "refrezh", "Maze", "Staehr", "lauNX"]
   },
   {
-    "name": "MIBR",
-    "logo": "https://img-cdn.hltv.org/teamlogo/m_JQ624LNFHWiUY-25uuaE.png?ixlib=java-2.1.0&w=100&s=bbcc329085294daa8e8a7111850b331b"
+    "name": "IHC",
+    "logo": "https://img-cdn.hltv.org/teamlogo/Dmy6A1T8EZ9OKU-x7yT4VR.png?ixlib=java-2.1.0&w=100&s=f4fe52db4325e243f484c495888c84b0",
+    "players": ["kabal", "sk0R", "Annihilation", "bLitz", "Techno"]
   },
   {
     "name": "9z",
-    "logo": "https://img-cdn.hltv.org/teamlogo/VHTbAzf4GXiQOriaMQdMx3.png?ixlib=java-2.1.0&w=100&s=c479c1ab118b9a96ceb1e6d78219bf83"
+    "logo": "https://img-cdn.hltv.org/teamlogo/VHTbAzf4GXiQOriaMQdMx3.png?ixlib=java-2.1.0&w=100&s=c479c1ab118b9a96ceb1e6d78219bf83",
+    "players": ["kabal", "sk0R", "Annihilation", "bLitz", "Techno"]
   },
   {
     "name": "GamerLegion",
-    "logo": "https://img-cdn.hltv.org/teamlogo/BD1c0f7YvwuXp4RLrWYnFe.svg?ixlib=java-2.1.0&s=9ffb668953d51e419065821b6c276762"
+    "logo": "https://img-cdn.hltv.org/teamlogo/BD1c0f7YvwuXp4RLrWYnFe.svg?ixlib=java-2.1.0&s=9ffb668953d51e419065821b6c276762",
+    "players": ["max", "dgt", "try", "dav1deuS", "buda"]
   },
   {
-    "name": "HEET",
-    "logo": "https://img-cdn.hltv.org/teamlogo/AjqeTZmRBevRSRD57V8R8B.png?ixlib=java-2.1.0&w=100&s=a6b0e2598f8ce96acf1de0d3072d7688"
+    "name": "Aurora",
+    "logo": "https://img-cdn.hltv.org/teamlogo/ADjAWLKLLv0iS04qDD7RKF.png?ixlib=java-2.1.0&w=100&s=1fd208422308cf4c4cc621d1c0e8a8de",
+    "players": ["Lack1", "SELLTER", "KENSI", "Norwi", "latt1kk"]
   }
 ]

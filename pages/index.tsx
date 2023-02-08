@@ -279,20 +279,29 @@ const Home = ({ teamsData, playersData }) => {
                 {Object.keys(Teams).map((key: string) => {
                   if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
                     return (
-                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '446px': '27rem', '1100px': '27.5rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '600px': '36rem', '1100px': '36rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
-                          <HStack spacing="0.4rem" position="absolute" left="2.5rem">
+                          <HStack spacing="1rem" position="absolute" left="10%">
                             <Image
                               src={Teams[key].logo}
                               draggable={false}
                               width={{ base: '2.5rem', '1100px': '2.7rem' }}
                               height="auto"
                             />
-                            <Hide breakpoint="(max-width: 446px)">
-                              <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Teams[key].name}</Text>
+                            <Hide breakpoint="(max-width: 600px)">
+                              <VStack>
+                                <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{Teams[key].name}</Text>
+                                <HStack>
+                                  {Array.from(Teams[key].players.sort()).map(player => {
+                                    return (
+                                      <Text fontSize="0.7rem">{player}</Text>
+                                    )
+                                  })}
+                                </HStack>
+                              </VStack>
                             </Hide>
                           </HStack>
-                          <HStack spacing="1rem" position="absolute" right="2.5rem">
+                          <HStack spacing="1rem" position="absolute" right="2rem">
                             <DarkMode>
                               <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
                                 <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
@@ -338,7 +347,7 @@ const Home = ({ teamsData, playersData }) => {
                               <Text id={`${Players[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Players[key].name}</Text>
                             </Hide>
                           </HStack>
-                          <HStack spacing="1rem" position="absolute" right="2.5rem">
+                          <HStack spacing="1rem" position="absolute" right="2rem">
                             <DarkMode>
                               <NumberInput id={`${Players[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={playerSpots.indexOf(Players[key].name)+1} min={1} max={30}>
                                 <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
