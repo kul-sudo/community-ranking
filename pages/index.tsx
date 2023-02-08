@@ -76,6 +76,7 @@ const getSpot = (sumOfVotes: number, numberOfVotes: number) => {
 
 const Info = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -112,7 +113,8 @@ const Info = () => {
 
 const Home = ({ teamsData, playersData }) => {
   const toast = useToast()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isOpenTeam, onOpen: onOpenTeam, onClose: onCloseTeam } = useDisclosure()
+  const { isOpen: isOpenPlayer, onOpen: onOpenPlayer, onClose: onClosePlayer } = useDisclosure()
 
   const [teamToVote, setTeamToVote] = useState(undefined)
   const [playerToVote, setPlayerToVote] = useState(undefined)
@@ -177,8 +179,8 @@ const Home = ({ teamsData, playersData }) => {
 
       <AlertDialog
         isCentered
-        isOpen={isOpen}
-        onClose={onClose}
+        onClose={onCloseTeam}
+        isOpen={isOpenTeam}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -192,7 +194,7 @@ const Home = ({ teamsData, playersData }) => {
 
           <AlertDialogFooter>
             <Button variant="outline" colorScheme="teal" onClick={() => {
-              onClose()
+              onCloseTeam()
               const parsedInput = document.getElementById(`${Teams[teamToVote].name}-input`).value
               if (parsedInput === '') {
                 toast({
@@ -219,8 +221,8 @@ const Home = ({ teamsData, playersData }) => {
 
       <AlertDialog
         isCentered
-        isOpen={isOpen}
-        onClose={onClose}
+        onClose={onClosePlayer}
+        isOpen={isOpenPlayer}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -234,7 +236,7 @@ const Home = ({ teamsData, playersData }) => {
 
           <AlertDialogFooter>
             <Button variant="outline" colorScheme="teal" onClick={() => {
-              onClose()
+              onClosePlayer()
               const parsedInput = document.getElementById(`${Players[playerToVote].name}-input`).value
               if (parsedInput === '') {
                 toast({
@@ -289,7 +291,7 @@ const Home = ({ teamsData, playersData }) => {
                               height="auto"
                             />
                             <Hide breakpoint="(max-width: 600px)">
-                              <VStack>
+                              <VStack alignItems="left">
                                 <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{Teams[key].name}</Text>
                                 <HStack>
                                   {Array.from(Teams[key].players.sort()).map(player => {
@@ -314,7 +316,7 @@ const Home = ({ teamsData, playersData }) => {
                             <DarkMode>
                               <Button width={{ base: '4.356rem', '1100px': '4.3rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
                                 setTeamToVote(key)
-                                onOpen()
+                                onOpenTeam()
                               }}>Vote</Button>
                             </DarkMode>
                           </HStack>
@@ -360,7 +362,7 @@ const Home = ({ teamsData, playersData }) => {
                             <DarkMode>
                               <Button width={{ base: '4.356rem', '1100px': '4.3rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
                                 setPlayerToVote(key)
-                                onOpen()
+                                onOpenPlayer()
                               }}>Vote</Button>
                             </DarkMode>
                           </HStack>
