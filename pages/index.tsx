@@ -98,6 +98,7 @@ const Info = () => {
       </Modal>
 
       <IconButton
+        zIndex="999"
         position="fixed"
         top="1"
         left="1"
@@ -133,6 +134,7 @@ const Guide = () => {
       </Modal>
 
       <IconButton
+        zIndex="999"
         position="fixed"
         top="1"
         left="1"
@@ -319,15 +321,28 @@ const Home = ({ teamsData, playersData }) => {
                 {Object.keys(Teams).map((key: string) => {
                   if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
                     return (
-                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '600px': '36rem', '1100px': '36rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '601px': '36rem', '1100px': '36rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
                           <HStack spacing="1rem" position="absolute" left={{ base: '14%', '600px': '10%' }}>
-                            <Image
-                              src={Teams[key].logo}
-                              draggable={false}
-                              width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                              height="auto"
-                            />
+                            <Show breakpoint="(min-width: 600px)">
+                              <Image
+                                src={Teams[key].logo}
+                                draggable={false}
+                                width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                height="auto"
+                              />
+                            </Show>
+                            <Hide breakpoint="(min-width: 600px)">
+                              <Tooltip hasArrow label={Teams[key].name} bg="gray.300" color="black">
+                                <Image
+                                  src={Teams[key].logo}
+                                  draggable={false}
+                                  width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                  height="auto"
+                                />
+                              </Tooltip>    
+                            </Hide>
+
                             <Hide breakpoint="(max-width: 600px)">
                               <VStack alignItems="left">
                                 <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{Teams[key].name}</Text>

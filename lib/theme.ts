@@ -13,6 +13,7 @@ type Fonts = {
 const breakpoints: Breakpoints = {
   '1100px': '1100px',
   '741px': '741px',
+  '601px': '601px',
   '600px': '600px',
   '447px': '447px',
   '446px': '446px'
