@@ -1,11 +1,11 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, Grid, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure, useToast } from '@chakra-ui/react'
-import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure, useToast, Kbd, Show, Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverArrow, PopoverCloseButton, PopoverBody, PopoverFooter, Tooltip } from '@chakra-ui/react'
+import { ArrowDownIcon, ArrowUpIcon, InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -103,8 +103,43 @@ const Info = () => {
         left="1"
         variant="ghost"
         rounded="full"
-        boxSize="4rem"
+        boxSize="3.5rem"
         icon={<InfoIcon boxSize="30" />}
+        onClick={onOpen}
+      />
+    </>
+  )
+}
+
+const Guide = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Info</ModalHeader>
+          <ModalBody pb="2rem" textAlign="center">
+            <Text fontSize="1.3rem">
+              <Kbd><TriangleUpIcon /></Kbd> increments the team spot, whereas <Kbd><TriangleDownIcon /></Kbd> decrements it.
+            </Text>
+            <Text pt="1rem" fontSize="1.3rem">
+              When the nickname is invisible, you can hover your nickname over the photo of the player and see the nickname.
+            </Text>
+          </ModalBody>
+          <ModalCloseButton />
+        </ModalContent>
+      </Modal>
+
+      <IconButton
+        position="fixed"
+        top="1"
+        left="1"
+        variant="ghost"
+        rounded="full"
+        boxSize="3.5rem"
+        icon={<QuestionIcon boxSize="30" />}
         onClick={onOpen}
       />
     </>
@@ -175,7 +210,10 @@ const Home = ({ teamsData, playersData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Info />
+      <HStack spacing="3rem">
+        <Info />
+        <Guide />       
+      </HStack>
 
       <AlertDialog
         isCentered
@@ -335,16 +373,29 @@ const Home = ({ teamsData, playersData }) => {
                 {Object.keys(Players).map((key: string) => {
                   if (Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
                     return (
-                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '446px': '27rem', '1100px': '27.5rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '447px': '27rem', '1100px': '27.5rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
                           <HStack spacing="0.4rem" position="absolute" left="2.5rem">
-                            <Image
-                              src={Players[key].logo}
-                              draggable={false}
-                              width={{ base: '3rem', '1100px': '4rem' }}
-                              height="auto"
-                              rounded="full"
+                            <Show breakpoint="(min-width: 446px)">
+                              <Image
+                                src={Players[key].logo}
+                                draggable={false}
+                                width={{ base: '3rem', '1100px': '4rem' }}
+                                height="auto"
+                                rounded="full"
                               />
+                            </Show>
+                            <Hide breakpoint="(min-width: 446px)">
+                              <Tooltip hasArrow label={Players[key].name} bg="gray.300" color="black">
+                                <Image
+                                  src={Players[key].logo}
+                                  draggable={false}
+                                  width={{ base: '3rem', '1100px': '4rem' }}
+                                  height="auto"
+                                  rounded="full"
+                                />
+                              </Tooltip>    
+                            </Hide>
                             <Hide breakpoint="(max-width: 446px)">
                               <Text id={`${Players[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Players[key].name}</Text>
                             </Hide>
