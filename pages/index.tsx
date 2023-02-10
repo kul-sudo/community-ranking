@@ -333,14 +333,21 @@ const Home = ({ teamsData, playersData }) => {
                               />
                             </Show>
                             <Hide breakpoint="(min-width: 600px)">
-                              <Tooltip hasArrow label={Teams[key].name} bg="gray.300" color="black">
-                                <Image
-                                  src={Teams[key].logo}
-                                  draggable={false}
-                                  width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                                  height="auto"
-                                />
-                              </Tooltip>    
+                              <Popover>
+                                <PopoverTrigger>
+                                  <Button variant="link">
+                                    <Image
+                                      src={Teams[key].logo}
+                                      draggable={false}
+                                      width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                      height="auto"
+                                    />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                  <Text color="#171923">{Teams[key].name}</Text>
+                                </PopoverContent>
+                              </Popover>
                             </Hide>
 
                             <Hide breakpoint="(max-width: 600px)">
@@ -401,15 +408,23 @@ const Home = ({ teamsData, playersData }) => {
                               />
                             </Show>
                             <Hide breakpoint="(min-width: 446px)">
-                              <Tooltip hasArrow label={Players[key].name} bg="gray.300" color="black">
-                                <Image
-                                  src={Players[key].logo}
-                                  draggable={false}
-                                  width={{ base: '3rem', '1100px': '4rem' }}
-                                  height="auto"
-                                  rounded="full"
-                                />
-                              </Tooltip>    
+                              <Popover>
+                                <PopoverTrigger>
+                                  <Button variant="link">
+                                    <Image
+                                      src={Players[key].logo}
+                                      draggable={false}
+                                      width={{ base: '3rem', '1100px': '4rem' }}
+                                      height="auto"
+                                      rounded="full"
+                                    />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                  <Text color="#171923">{Players[key].name}</Text>
+                                </PopoverContent>
+                              </Popover>
+
                             </Hide>
                             <Hide breakpoint="(max-width: 446px)">
                               <Text id={`${Players[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Players[key].name}</Text>
