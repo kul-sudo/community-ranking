@@ -43,18 +43,14 @@ const writeTeamData = (teamName: string, spot: number) => {
   set(ref(db, `teams/${teamName}`), {
     numberOfVotes: increment(1),
     sumOfVotes: increment(spot)
-  }).then(() => {
-      window.location.reload()
-    })
+  })
 }
 
 const writePlayerData = (playerName: string, spot: number) => {
   set(ref(db, `players/${playerName}`), {
     numberOfVotes: increment(1),
     sumOfVotes: increment(spot)
-  }).then(() => {
-      window.location.reload()
-    })
+  })
 }
 
 
@@ -121,13 +117,20 @@ const Guide = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Info</ModalHeader>
-          <ModalBody pb="2rem" textAlign="center">
-            <Text fontSize="1.3rem">
-              <Kbd><TriangleUpIcon /></Kbd> increments the team spot, whereas <Kbd><TriangleDownIcon /></Kbd> decrements it.
-            </Text>
-            <Text pt="1rem" fontSize="1.3rem">
-              When the nickname is invisible, you can hover your nickname over the photo of the player and see the nickname.
-            </Text>
+          <ModalBody pb="2rem">
+            <OrderedList spacing="0.5rem" textAlign="center" fontSize="1.3rem" textAlign="left">
+              <ListItem>
+                <Kbd><TriangleUpIcon /></Kbd> increments the team spot, whereas <Kbd><TriangleDownIcon /></Kbd> decrements it.
+              </ListItem>
+              <ListItem>
+                Press
+                <Button width="3.5rem" height="2rem" ml="10px" variant="outline" colorScheme="teal">Vote</Button> and
+                confirm your action in the alert dialogue.
+              </ListItem>
+              <ListItem>
+                Continue voting or refresh the page for the spots to be updated.
+              </ListItem>
+            </OrderedList>
           </ModalBody>
           <ModalCloseButton />
         </ModalContent>
@@ -249,7 +252,7 @@ const Home = ({ teamsData, playersData }) => {
               writeTeamData(Teams[teamToVote].name, parseInt(parsedInput))
               toast({
                 title: 'Success',
-                description: 'Your vote has been included',
+                description: 'Your vote has been included. Refresh the page for the spots to be updated.',
                 status: 'success',
                 duration: 5000,
                 isClosable: true
@@ -291,7 +294,7 @@ const Home = ({ teamsData, playersData }) => {
               writePlayerData(Players[playerToVote].name, parseInt(parsedInput))
               toast({
                 title: 'Success',
-                description: 'Your vote has been included',
+                description: 'Your vote has been included. Refresh the page for the spots to be updated.',
                 status: 'success',
                 duration: 5000,
                 isClosable: true
@@ -300,7 +303,6 @@ const Home = ({ teamsData, playersData }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
 
       <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
