@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure, useToast, Kbd, Show, Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverArrow, PopoverCloseButton, PopoverBody, PopoverFooter, Tooltip } from '@chakra-ui/react'
-import { ArrowDownIcon, ArrowUpIcon, InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import { InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
+import { ReactSortable } from 'react-sortablejs'
 
 let useTabIndex = set => ({
   number: 0,
@@ -151,6 +152,37 @@ const Guide = () => {
   )
 }
 
+const getOnlyNames = (dictionary: any) => {
+  let result = []
+  for (let element of dictionary) {
+    result.push(element.name)
+  }
+  console.log(result)
+  return result
+}
+
+const arraysEqual = (a, b) => {
+  if (a === b) return true
+  if (a == null || b == null) return false
+  if (a.length !== b.length) return false
+
+  for (let i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false
+  }
+  return true
+}
+
+const getUpdatedSpots = (newList: string[], defaultList: string[]) => {
+  const changedSpots = {}
+  for (let i = 0; i <= defaultList.length; i++) {
+    if (defaultList[i] !== newList[i]) {
+      changedSpots[defaultList[i]] = newList.indexOf(defaultList[i]) + 1
+    }
+  }
+
+  return changedSpots
+}
+
 const Home = ({ teamsData, playersData }) => {
   const toast = useToast()
   const { isOpen: isOpenTeam, onOpen: onOpenTeam, onClose: onCloseTeam } = useDisclosure()
@@ -207,6 +239,9 @@ const Home = ({ teamsData, playersData }) => {
     changeTabIndex(index)
   }
 
+  const [teamsList, setTeamsList] = useState(Teams)
+  const [playersList, setPlayersList] = useState(Players)
+  
   return (
     <>
       <Head>
@@ -219,90 +254,6 @@ const Home = ({ teamsData, playersData }) => {
         <Info />
         <Guide />       
       </HStack>
-
-      <AlertDialog
-        isCentered
-        onClose={onCloseTeam}
-        isOpen={isOpenTeam}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            Confirmation of the vote
-          </AlertDialogHeader>
-          <AlertDialogCloseButton />
-
-          <AlertDialogBody>
-            Are you sure you&apos;d like to do the vote?
-          </AlertDialogBody>
-
-          <AlertDialogFooter>
-            <Button variant="outline" colorScheme="teal" onClick={() => {
-              onCloseTeam()
-              const parsedInput = document.getElementById(`${Teams[teamToVote].name}-input`).value
-              if (parsedInput === '') {
-                toast({
-                  title: 'Error',
-                  description: 'There is no number in the input',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true
-                })
-                return
-              }
-              writeTeamData(Teams[teamToVote].name, parseInt(parsedInput))
-              toast({
-                title: 'Success',
-                description: 'Your vote has been included. Refresh the page for the spots to be updated.',
-                status: 'success',
-                duration: 5000,
-                isClosable: true
-              })
-            }}>Confirm the vote</Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog
-        isCentered
-        onClose={onClosePlayer}
-        isOpen={isOpenPlayer}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            Confirmation of the vote
-          </AlertDialogHeader>
-          <AlertDialogCloseButton />
-
-          <AlertDialogBody>
-            Are you sure you&apos;d like to do the vote?
-          </AlertDialogBody>
-
-          <AlertDialogFooter>
-            <Button variant="outline" colorScheme="teal" onClick={() => {
-              onClosePlayer()
-              const parsedInput = document.getElementById(`${Players[playerToVote].name}-input`).value
-              if (parsedInput === '') {
-                toast({
-                  title: 'Error',
-                  description: 'There is no number in the input',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true
-                })
-                return
-              }
-              writePlayerData(Players[playerToVote].name, parseInt(parsedInput))
-              toast({
-                title: 'Success',
-                description: 'Your vote has been included. Refresh the page for the spots to be updated.',
-                status: 'success',
-                duration: 5000,
-                isClosable: true
-              })
-            }}>Confirm the vote</Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
@@ -317,144 +268,138 @@ const Home = ({ teamsData, playersData }) => {
         </Center>
         <TabPanels>
           <TabPanel>
+            <Button onClick={() => {
+              const updatedSpots = getUpdatedSpots(getOnlyNames(teamsList), getOnlyNames(Teams))
+              Promise.all(Object.keys(updatedSpots).map(element => {
+                writeTeamData(element, updatedSpots[element])
+              })).then(() => setTimeout(() => window.location.reload(), 2000))
+            }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(teamsList), getOnlyNames(Teams)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="teamsList">
                 <Input mt="0.5rem" width="22.4rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
-                {Object.keys(Teams).map((key: string) => {
-                  if (Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
-                    return (
-                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '601px': '36rem', '1100px': '36rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
-                        <HStack>
-                          <HStack spacing="1rem" position="absolute" left={{ base: '14%', '600px': '10%' }}>
-                            <Show breakpoint="(min-width: 600px)">
-                              <Image
-                                src={Teams[key].logo}
-                                draggable={false}
-                                width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                                height="auto"
-                              />
-                            </Show>
-                            <Hide breakpoint="(min-width: 600px)">
-                              <Popover>
-                                <PopoverTrigger>
-                                  <Button variant="link">
-                                    <Image
-                                      src={Teams[key].logo}
-                                      draggable={false}
-                                      width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                                      height="auto"
-                                    />
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
-                                  <Text color="#171923">{Teams[key].name}</Text>
-                                </PopoverContent>
-                              </Popover>
-                            </Hide>
+                <ReactSortable
+                  id="a"
+                  filter=".addImageButtonContainer"
+                  dragClass="sortableDrag"
+                  list={teamsList}
+                  setList={setTeamsList}
+                  animation={200}
+                >
+                  {Object.keys(teamsList).map((key: string) => {
+                    if (teamsList[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
+                      return (
+                        <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                          <HStack>
+                            <HStack px="1rem" spacing="0.7rem">
+                              <Text>#{teamSpots.indexOf(Teams[key].name)+1}</Text>
+                              <Show breakpoint="(min-width: 474px)">
+                                <Image
+                                  src={teamsList[key].logo}
+                                  draggable={false}
+                                  width="2.5rem"
+                                  height="auto"
+                                />
+                              </Show>
+                              <Hide breakpoint="(min-width: 474px)">
+                                <Popover>
+                                  <PopoverTrigger>
+                                    <Button variant="link">
+                                      <Image
+                                        src={teamsList[key].logo}
+                                        draggable={false}
+                                        width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                        height="auto"
+                                      />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                    <Text color="#171923">{teamsList[key].name}</Text>
+                                  </PopoverContent>
+                                </Popover>
+                              </Hide>
 
-                            <Hide breakpoint="(max-width: 600px)">
-                              <VStack alignItems="left">
-                                <Text id={`${Teams[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{Teams[key].name}</Text>
-                                <HStack>
-                                  {Array.from(Teams[key].players.sort()).map(player => {
-                                    return (
-                                      <Text fontSize="0.7rem">{player}</Text>
-                                    )
-                                  })}
-                                </HStack>
-                              </VStack>
-                            </Hide>
-                          </HStack>
-                          <HStack spacing="1rem" position="absolute" right="2rem">
-                            <DarkMode>
-                              <NumberInput id={`${Teams[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={teamSpots.indexOf(Teams[key].name)+1} min={1} max={30}>
-                                <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
-                                <NumberInputStepper>
-                                  <NumberDecrementStepper children={<TriangleUpIcon />} />
-                                  <NumberIncrementStepper children={<TriangleDownIcon />} />
-                                </NumberInputStepper>
-                              </NumberInput>
-                            </DarkMode>
-                            <DarkMode>
-                              <Button width={{ base: '4.356rem', '1100px': '4.3rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
-                                setTeamToVote(key)
-                                onOpenTeam()
-                              }}>Vote</Button>
-                            </DarkMode>
+                              <Hide breakpoint="(max-width: 474px)">
+                                <VStack spacing="0" alignItems="left">
+                                  <Text id={`${teamsList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{teamsList[key].name}</Text>
+                                  <HStack>
+                                    {Array.from(teamsList[key].players.sort()).map(player => {
+                                      return (
+                                        <Text fontSize="0.7rem">{player}</Text>
+                                      )
+                                    })}
+                                  </HStack>
+                                </VStack>
+                              </Hide>
+                            </HStack>
                           </HStack>
                         </HStack>
-                      </HStack>
-                    )
-                  }
-                })}
+                      )
+                    }
+                  })}
+                </ReactSortable>
               </VStack>
             </Center>
           </TabPanel>
           <TabPanel>
+            <Button onClick={() => {
+              const updatedSpots = getUpdatedSpots(getOnlyNames(playersList), getOnlyNames(Players))
+              Promise.all(Object.keys(updatedSpots).map(element => {
+                writePlayerData(element, updatedSpots[element])
+              })).then(() => setTimeout(() => window.location.reload(), 2000))
+            }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(playersList), getOnlyNames(Players)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="playersList">
                 <Input mt="0.5rem" width="22.4rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
-                {Object.keys(Players).map((key: string) => {
-                  if (Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
-                    return (
-                      <HStack position="relative" justifyContent="center" backgroundColor="#111827" height="6rem" width={{ base: '20rem', '447px': '27rem', '1100px': '27.5rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
-                        <HStack>
-                          <HStack spacing="0.4rem" position="absolute" left="2.5rem">
-                            <Show breakpoint="(min-width: 446px)">
-                              <Image
-                                src={Players[key].logo}
-                                draggable={false}
-                                width={{ base: '3rem', '1100px': '4rem' }}
-                                height="auto"
-                                rounded="full"
-                              />
-                            </Show>
-                            <Hide breakpoint="(min-width: 446px)">
-                              <Popover>
-                                <PopoverTrigger>
-                                  <Button variant="link">
-                                    <Image
-                                      src={Players[key].logo}
-                                      draggable={false}
-                                      width={{ base: '3rem', '1100px': '4rem' }}
-                                      height="auto"
-                                      rounded="full"
-                                    />
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
-                                  <Text color="#171923">{Players[key].name}</Text>
-                                </PopoverContent>
-                              </Popover>
-
-                            </Hide>
-                            <Hide breakpoint="(max-width: 446px)">
-                              <Text id={`${Players[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{Players[key].name}</Text>
-                            </Hide>
-                          </HStack>
-                          <HStack spacing="1rem" position="absolute" right="2rem">
-                            <DarkMode>
-                              <NumberInput id={`${Players[key].name}-input`} keepWithinRange={true} color="#fff" defaultValue={playerSpots.indexOf(Players[key].name)+1} min={1} max={30}>
-                                <NumberInputField width={{ base: '5rem', '1100px': '5.5rem' }} height={{ base: '2.5rem', '1100px': '2.7rem' }} textAlign="center" fontSize={{ base: '1.2rem', '1100px': '1.2rem' }} />
-                                <NumberInputStepper>
-                                  <NumberDecrementStepper children={<TriangleUpIcon />} />
-                                  <NumberIncrementStepper children={<TriangleDownIcon />} />
-                                </NumberInputStepper>
-                              </NumberInput>
-                            </DarkMode>
-                            <DarkMode>
-                              <Button width={{ base: '4.356rem', '1100px': '4.3rem' }} height={{ base: '2.2rem', '1100px': '2.5rem' }} variant="outline" colorScheme="teal" onClick={() => {
-                                setPlayerToVote(key)
-                                onOpenPlayer()
-                              }}>Vote</Button>
-                            </DarkMode>
+                <ReactSortable
+                  filter=".addImageButtonContainer"
+                  dragClass="sortableDrag"
+                  list={playersList}
+                  setList={setPlayersList}
+                  animation={200}
+                >
+                  {Object.keys(playersList).map((key: string) => {
+                    if (playersList[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
+                      return (
+                        <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                          <HStack>
+                            <HStack px="1rem" spacing="0.7rem">
+                              <Text>#{playerSpots.indexOf(Players[key].name)+1}</Text>
+                              <Show breakpoint="(min-width: 474px)">
+                                <Image
+                                  src={playersList[key].logo}
+                                  draggable={false}
+                                  width="2.5rem"
+                                  height="auto"
+                                />
+                              </Show>
+                              <Hide breakpoint="(min-width: 474px)">
+                                <Popover>
+                                  <PopoverTrigger>
+                                    <Button variant="link">
+                                      <Image
+                                        src={playersList[key].logo}
+                                        draggable={false}
+                                        width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                        height="auto"
+                                      />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                    <Text color="#171923">{playersList[key].name}</Text>
+                                  </PopoverContent>
+                                </Popover>
+                              </Hide>
+                              <Hide breakpoint="(max-width: 474px)">
+                                <Text id={`${playersList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{playersList[key].name}</Text>
+                              </Hide>
+                            </HStack>
                           </HStack>
                         </HStack>
-                      </HStack>
-                    )
-                  }
-                  }
-                )}
+                      )
+                    }
+                    }
+                  )}
+                </ReactSortable>
               </VStack>
             </Center>
           </TabPanel>
@@ -465,7 +410,12 @@ const Home = ({ teamsData, playersData }) => {
 }
 
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
+  
   let teamsData = {}
   let playersData = {}
 
