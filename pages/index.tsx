@@ -185,11 +185,7 @@ const getUpdatedSpots = (newList: string[], defaultList: string[]) => {
 
 const Home = ({ teamsData, playersData }) => {
   const toast = useToast()
-  const { isOpen: isOpenTeam, onOpen: onOpenTeam, onClose: onCloseTeam } = useDisclosure()
-  const { isOpen: isOpenPlayer, onOpen: onOpenPlayer, onClose: onClosePlayer } = useDisclosure()
-
-  const [teamToVote, setTeamToVote] = useState(undefined)
-  const [playerToVote, setPlayerToVote] = useState(undefined)
+  
   const [searchTeam, setSearchTeam] = useState('')
   const [searchPlayerName, setSearchPlayerName] = useState('')
 
@@ -272,7 +268,15 @@ const Home = ({ teamsData, playersData }) => {
               const updatedSpots = getUpdatedSpots(getOnlyNames(teamsList), getOnlyNames(Teams))
               Promise.all(Object.keys(updatedSpots).map(element => {
                 writeTeamData(element, updatedSpots[element])
-              })).then(() => setTimeout(() => window.location.reload(), 2000))
+              })).then(() => {
+                  toast({
+                    title: 'Success',
+                    description: 'Your vote has been included. The page is to update.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true
+                  })
+                setTimeout(() => window.location.reload(), 2000) })
             }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(teamsList), getOnlyNames(Teams)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="teamsList">
@@ -345,7 +349,15 @@ const Home = ({ teamsData, playersData }) => {
               const updatedSpots = getUpdatedSpots(getOnlyNames(playersList), getOnlyNames(Players))
               Promise.all(Object.keys(updatedSpots).map(element => {
                 writePlayerData(element, updatedSpots[element])
-              })).then(() => setTimeout(() => window.location.reload(), 2000))
+              })).then(() => {
+                  toast({
+                    title: 'Success',
+                    description: 'Your vote has been included. The page is to update.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true
+                  })
+                setTimeout(() => window.location.reload(), 2000) })
             }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(playersList), getOnlyNames(Players)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="playersList">
