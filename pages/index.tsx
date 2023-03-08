@@ -157,7 +157,6 @@ const getOnlyNames = (dictionary: any) => {
   for (let element of dictionary) {
     result.push(element.name)
   }
-  console.log(result)
   return result
 }
 
@@ -276,11 +275,11 @@ const Home = ({ teamsData, playersData }) => {
                     duration: 9000,
                     isClosable: true
                   })
-                setTimeout(() => window.location.reload(), 2000) })
+                setTimeout(() => window.location.reload(), 1000) })
             }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(teamsList), getOnlyNames(Teams)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="teamsList">
-                <Input mt="0.5rem" width="22.4rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
+                <Input mt="0.5rem" width="15rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
                 <ReactSortable
                   id="a"
                   filter=".addImageButtonContainer"
@@ -290,12 +289,11 @@ const Home = ({ teamsData, playersData }) => {
                   animation={200}
                 >
                   {Object.keys(teamsList).map((key: string) => {
-                    if (teamsList[key].name.toLowerCase().includes(searchTeam.toLowerCase())) {
                       return (
-                        <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                        <HStack display={Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                           <HStack>
-                            <HStack px="1rem" spacing="0.7rem">
-                              <Text>#{teamSpots.indexOf(Teams[key].name)+1}</Text>
+                            <HStack px="1rem">
+                              <Text>#{(teamSpots.indexOf(Teams[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
                               <Show breakpoint="(min-width: 474px)">
                                 <Image
                                   src={teamsList[key].logo}
@@ -338,7 +336,6 @@ const Home = ({ teamsData, playersData }) => {
                           </HStack>
                         </HStack>
                       )
-                    }
                   })}
                 </ReactSortable>
               </VStack>
@@ -357,11 +354,11 @@ const Home = ({ teamsData, playersData }) => {
                     duration: 9000,
                     isClosable: true
                   })
-                setTimeout(() => window.location.reload(), 2000) })
+                setTimeout(() => window.location.reload(), 1000) })
             }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(playersList), getOnlyNames(Players)) ? true : false}>Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="playersList">
-                <Input mt="0.5rem" width="22.4rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
+                <Input mt="0.5rem" width="15rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
                 <ReactSortable
                   filter=".addImageButtonContainer"
                   dragClass="sortableDrag"
@@ -370,12 +367,12 @@ const Home = ({ teamsData, playersData }) => {
                   animation={200}
                 >
                   {Object.keys(playersList).map((key: string) => {
-                    if (playersList[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
+                    if (Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
                       return (
                         <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                           <HStack>
                             <HStack px="1rem" spacing="0.7rem">
-                              <Text>#{playerSpots.indexOf(Players[key].name)+1}</Text>
+                              <Text>#{(playerSpots.indexOf(Players[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
                               <Show breakpoint="(min-width: 474px)">
                                 <Image
                                   src={playersList[key].logo}
