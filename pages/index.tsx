@@ -289,53 +289,53 @@ const Home = ({ teamsData, playersData }) => {
                   animation={200}
                 >
                   {Object.keys(teamsList).map((key: string) => {
-                      return (
-                        <HStack display={Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
-                          <HStack>
-                            <HStack px="1rem">
-                              <Text>#{(teamSpots.indexOf(Teams[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
-                              <Show breakpoint="(min-width: 474px)">
-                                <Image
-                                  src={teamsList[key].logo}
-                                  draggable={false}
-                                  width="2.5rem"
-                                  height="auto"
+                    return (
+                      <HStack display={Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                        <HStack>
+                          <HStack px="1rem">
+                            <Text>#{(teamSpots.indexOf(Teams[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
+                            <Show breakpoint="(min-width: 474px)">
+                              <Image
+                                src={teamsList[key].logo}
+                                draggable={false}
+                                width="2.5rem"
+                                height="auto"
                                 />
-                              </Show>
-                              <Hide breakpoint="(min-width: 474px)">
-                                <Popover>
-                                  <PopoverTrigger>
-                                    <Button variant="link">
-                                      <Image
-                                        src={teamsList[key].logo}
-                                        draggable={false}
-                                        width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                                        height="auto"
+                            </Show>
+                            <Hide breakpoint="(min-width: 474px)">
+                              <Popover>
+                                <PopoverTrigger>
+                                  <Button variant="link">
+                                    <Image
+                                      src={teamsList[key].logo}
+                                      draggable={false}
+                                      width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                      height="auto"
                                       />
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
-                                    <Text color="#171923">{teamsList[key].name}</Text>
-                                  </PopoverContent>
-                                </Popover>
-                              </Hide>
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                  <Text color="#171923">{teamsList[key].name}</Text>
+                                </PopoverContent>
+                              </Popover>
+                            </Hide>
 
-                              <Hide breakpoint="(max-width: 474px)">
-                                <VStack spacing="0" alignItems="left">
-                                  <Text id={`${teamsList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{teamsList[key].name}</Text>
-                                  <HStack>
-                                    {Array.from(teamsList[key].players.sort()).map(player => {
-                                      return (
-                                        <Text fontSize="0.7rem">{player}</Text>
-                                      )
-                                    })}
-                                  </HStack>
-                                </VStack>
-                              </Hide>
-                            </HStack>
+                            <Hide breakpoint="(max-width: 474px)">
+                              <VStack spacing="0" alignItems="left">
+                                <Text id={`${teamsList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{teamsList[key].name}</Text>
+                                <HStack>
+                                  {Array.from(teamsList[key].players.sort()).map(player => {
+                                    return (
+                                      <Text fontSize="0.7rem">{player}</Text>
+                                    )
+                                  })}
+                                </HStack>
+                              </VStack>
+                            </Hide>
                           </HStack>
                         </HStack>
-                      )
+                      </HStack>
+                    )
                   })}
                 </ReactSortable>
               </VStack>
@@ -367,46 +367,44 @@ const Home = ({ teamsData, playersData }) => {
                   animation={200}
                 >
                   {Object.keys(playersList).map((key: string) => {
-                    if (Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase())) {
                       return (
-                        <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
-                          <HStack>
-                            <HStack px="1rem" spacing="0.7rem">
-                              <Text>#{(playerSpots.indexOf(Players[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
-                              <Show breakpoint="(min-width: 474px)">
-                                <Image
-                                  src={playersList[key].logo}
-                                  draggable={false}
-                                  width="2.5rem"
-                                  height="auto"
+                      <HStack display={Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                        <HStack>
+                          <HStack px="1rem" spacing="0.7rem">
+                            <Text>#{(playerSpots.indexOf(Players[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
+                            <Show breakpoint="(min-width: 474px)">
+                              <Image
+                                src={playersList[key].logo}
+                                draggable={false}
+                                width="2.5rem"
+                                height="auto"
                                 />
-                              </Show>
-                              <Hide breakpoint="(min-width: 474px)">
-                                <Popover>
-                                  <PopoverTrigger>
-                                    <Button variant="link">
-                                      <Image
-                                        src={playersList[key].logo}
-                                        draggable={false}
-                                        width={{ base: '2.5rem', '1100px': '2.7rem' }}
-                                        height="auto"
+                            </Show>
+                            <Hide breakpoint="(min-width: 474px)">
+                              <Popover>
+                                <PopoverTrigger>
+                                  <Button variant="link">
+                                    <Image
+                                      src={playersList[key].logo}
+                                      draggable={false}
+                                      width={{ base: '2.5rem', '1100px': '2.7rem' }}
+                                      height="auto"
                                       />
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
-                                    <Text color="#171923">{playersList[key].name}</Text>
-                                  </PopoverContent>
-                                </Popover>
-                              </Hide>
-                              <Hide breakpoint="(max-width: 474px)">
-                                <Text id={`${playersList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{playersList[key].name}</Text>
-                              </Hide>
-                            </HStack>
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
+                                  <Text color="#171923">{playersList[key].name}</Text>
+                                </PopoverContent>
+                              </Popover>
+                            </Hide>
+                            <Hide breakpoint="(max-width: 474px)">
+                              <Text id={`${playersList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{playersList[key].name}</Text>
+                            </Hide>
                           </HStack>
                         </HStack>
-                      )
-                    }
-                    }
+                      </HStack>
+                    )
+                  }
                   )}
                 </ReactSortable>
               </VStack>
