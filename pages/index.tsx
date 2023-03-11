@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, VStack, Text, Image, HStack, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Button, AlertDialogBody, AlertDialogCloseButton, Center, DarkMode, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure, useToast, Kbd, Show, Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverArrow, PopoverCloseButton, PopoverBody, PopoverFooter, Tooltip } from '@chakra-ui/react'
+import { VStack, Text, Image, HStack, Center, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, Kbd, Show, Popover, PopoverTrigger, PopoverContent, Button, useDisclosure, useToast,  } from '@chakra-ui/react'
 import { InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
@@ -26,34 +26,31 @@ type Team = {
 }
 
 const config = {
-  apiKey: "AIzaSyAhueS1EcupzIUmTA7nhm7bwF48qDN8zbc",
-  authDomain: "community-ranking-d7bf5.firebaseapp.com",
-  databaseURL: "https://community-ranking-d7bf5-default-rtdb.firebaseio.com",
-  projectId: "community-ranking-d7bf5",
-  storageBucket: "community-ranking-d7bf5.appspot.com",
-  messagingSenderId: "494668400916",
-  appId: "1:494668400916:web:5cfb82bcd3b57f12ec9a01",
-  measurementId: "G-EWZZ6L87ZR"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: 'https://community-ranking-d7bf5-default-rtdb.firebaseio.com',
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID
 }
 
 initializeApp(config)
 
 const db = getDatabase()
 
-const writeTeamData = (teamName: string, spot: number) => {
+const writeTeamsData = (teamName: string, spot: number) => {
   set(ref(db, `teams/${teamName}`), {
-    numberOfVotes: increment(1),
-    sumOfVotes: increment(spot)
+    sumOfSpots: increment(spot)
   })
 }
 
-const writePlayerData = (playerName: string, spot: number) => {
+const writePlayersData = (playerName: string, spot: number) => {
   set(ref(db, `players/${playerName}`), {
-    numberOfVotes: increment(1),
-    sumOfVotes: increment(spot)
+    sumOfSpots: increment(spot)
   })
 }
-
 
 const retrieveTeamData = async (teamName: string) => {
   const snapshot = await get(ref(db, `teams/${teamName}`))
@@ -65,11 +62,6 @@ const retrievePlayerData = async (playerName: string) => {
   return snapshot.val()
 }
 
-
-const getSpot = (sumOfVotes: number, numberOfVotes: number) => {
-  const predefined = sumOfVotes / numberOfVotes
-  return isNaN(predefined) ? 0: predefined
-}
 
 const Info = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -97,7 +89,7 @@ const Info = () => {
       <IconButton
         zIndex="999"
         position="fixed"
-        top="1"
+        top="8"
         left="1"
         variant="ghost"
         rounded="full"
@@ -140,7 +132,7 @@ const Guide = () => {
       <IconButton
         zIndex="999"
         position="fixed"
-        top="1"
+        top="8"
         left="1"
         variant="ghost"
         rounded="full"
@@ -152,34 +144,13 @@ const Guide = () => {
   )
 }
 
-const getOnlyNames = (dictionary: any) => {
-  let result = []
+const getList = (dictionary: any) => {
+  let ret = []
   for (let element of dictionary) {
-    result.push(element.name)
-  }
-  return result
-}
-
-const arraysEqual = (a, b) => {
-  if (a === b) return true
-  if (a == null || b == null) return false
-  if (a.length !== b.length) return false
-
-  for (let i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false
-  }
-  return true
-}
-
-const getUpdatedSpots = (newList: string[], defaultList: string[]) => {
-  const changedSpots = {}
-  for (let i = 0; i <= defaultList.length; i++) {
-    if (defaultList[i] !== newList[i]) {
-      changedSpots[defaultList[i]] = newList.indexOf(defaultList[i]) + 1
-    }
+    ret.push(element.name)
   }
 
-  return changedSpots
+  return ret
 }
 
 const Home = ({ teamsData, playersData }) => {
@@ -192,8 +163,8 @@ const Home = ({ teamsData, playersData }) => {
   const handlePlayerNameChange = event => setSearchPlayerName(event.target.value)
 
   Teams.sort((a: Team, b: Team) => {
-    const getSpotA = getSpot(teamsData[a.name].sumOfVotes, teamsData[a.name].numberOfVotes)
-    const getSpotB = getSpot(teamsData[b.name].sumOfVotes, teamsData[b.name].numberOfVotes)
+    const getSpotA = teamsData[a.name].sumOfSpots
+    const getSpotB = teamsData[b.name].sumOfSpots
 
     if (getSpotA > getSpotB) {
       return 1
@@ -210,8 +181,8 @@ const Home = ({ teamsData, playersData }) => {
   })
 
   Players.sort((a: Team, b: Team) => {
-    const getSpotA = getSpot(playersData[a.name].sumOfVotes, playersData[a.name].numberOfVotes)
-    const getSpotB = getSpot(playersData[b.name].sumOfVotes, playersData[b.name].numberOfVotes)
+    const getSpotA = playersData[a.name].sumOfSpots
+    const getSpotB = playersData[b.name].sumOfSpots
 
     if (getSpotA > getSpotB) {
       return 1
@@ -237,6 +208,8 @@ const Home = ({ teamsData, playersData }) => {
   const [teamsList, setTeamsList] = useState(Teams)
   const [playersList, setPlayersList] = useState(Players)
   
+  const [hasVoted, setHasVoted] = useState(false)
+
   return (
     <>
       <Head>
@@ -249,6 +222,8 @@ const Home = ({ teamsData, playersData }) => {
         <Info />
         <Guide />       
       </HStack>
+
+      <Box py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for 40 minutes</Box>
 
       <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
@@ -264,19 +239,19 @@ const Home = ({ teamsData, playersData }) => {
         <TabPanels>
           <TabPanel>
             <Button onClick={() => {
-              const updatedSpots = getUpdatedSpots(getOnlyNames(teamsList), getOnlyNames(Teams))
-              Promise.all(Object.keys(updatedSpots).map(element => {
-                writeTeamData(element, updatedSpots[element])
-              })).then(() => {
-                  toast({
-                    title: 'Success',
-                    description: 'Your vote has been included. The page is to update.',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true
-                  })
-                setTimeout(() => window.location.reload(), 1000) })
-            }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(teamsList), getOnlyNames(Teams)) ? true : false}>Apply spots</Button>
+              const newTeamsList = getList(teamsList)
+              for (let i = 1; i <= 30; i++) {
+                const element = newTeamsList[i - 1]
+                writeTeamsData(element, i)
+              }
+              setHasVoted(true)
+              toast({
+                title: 'Success',
+                description: 'Your vote has been included. The page is to update.',
+                status: 'success'
+              })
+              setTimeout(() => window.location.reload(), 1000)
+            }} isDisabled={hasVoted} zIndex="999" position="fixed" bottom="5" right="5">Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="teamsList">
                 <Input mt="0.5rem" width="15rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
@@ -300,7 +275,7 @@ const Home = ({ teamsData, playersData }) => {
                                 draggable={false}
                                 width="2.5rem"
                                 height="auto"
-                                />
+                              />
                             </Show>
                             <Hide breakpoint="(min-width: 474px)">
                               <Popover>
@@ -343,19 +318,19 @@ const Home = ({ teamsData, playersData }) => {
           </TabPanel>
           <TabPanel>
             <Button onClick={() => {
-              const updatedSpots = getUpdatedSpots(getOnlyNames(playersList), getOnlyNames(Players))
-              Promise.all(Object.keys(updatedSpots).map(element => {
-                writePlayerData(element, updatedSpots[element])
-              })).then(() => {
-                  toast({
-                    title: 'Success',
-                    description: 'Your vote has been included. The page is to update.',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true
-                  })
-                setTimeout(() => window.location.reload(), 1000) })
-            }} zIndex="999" position="fixed" bottom="5" right="5" isDisabled={arraysEqual(getOnlyNames(playersList), getOnlyNames(Players)) ? true : false}>Apply spots</Button>
+              const newPlayersList = getList(playersList)
+              for (let i = 1; i <= 30; i++) {
+                const element = newPlayersList[i - 1]
+                writePlayersData(element, i)
+              }
+              setHasVoted(true)
+              toast({
+                title: 'Success',
+                description: 'Your vote has been included. The page is to update.',
+                status: 'success'
+              })
+              setTimeout(() => window.location.reload(), 1000)
+            }} isDisabled={hasVoted} zIndex="999" position="fixed" bottom="5" right="5">Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="playersList">
                 <Input mt="0.5rem" width="15rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />

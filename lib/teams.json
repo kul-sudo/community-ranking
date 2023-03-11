@@ -62,17 +62,17 @@
   {
     "name": "ENCE",
     "logo": "https://img-cdn.hltv.org/teamlogo/-X8NoyWC_1gYqUHvZqcpkc.svg?ixlib=java-2.1.0&s=85bb9daa6f846fa097c5942f2565fdb8",
-    "players": ["Snappi", "valde", "Maden", "dycha", "SunPayus"]
+    "players": ["Snappi", "NertZ", "Maden", "dycha", "SunPayus"]
   },
   {
     "name": "OG",
     "logo": "https://img-cdn.hltv.org/teamlogo/VZHA__RIJY6gisB-l6HfiO.png?ixlib=java-2.1.0&w=100&s=2ef53aec0eec6572ba50ed419222d4e5",
-    "players": ["nexa", "NEOFRAG", "flameZ", "degster", "F1KU"]
+    "players": ["niko", "NEOFRAG", "flameZ", "degster", "F1KU"]
   },
   {
     "name": "BIG",
     "logo": "https://img-cdn.hltv.org/teamlogo/yQB6cm3KZ_BcyrgppBQMjc.svg?ixlib=java-2.1.0&s=06825290bfb61c9f8467f5c323f51974",
-    "players": ["tabseN", "syrsoN", "k1to", "faveN", "Krimbo"]
+    "players": ["tabseN", "hyped", "k1to", "faveN", "Krimbo"]
   },
   {
     "name": "Astralis",
@@ -127,12 +127,12 @@
   {
     "name": "Sprout",
     "logo": "https://img-cdn.hltv.org/teamlogo/Ut8iEF66VCIbZGniMYn5jL.svg?ixlib=java-2.1.0&s=e6ae4904320fcbb566d098641e22a474",
-    "players": ["XELLOW", "refrezh", "Maze", "Staehr", "lauNX"]
+    "players": ["XELLOW", "AZR", "Zyphon", "Staehr", "lauNX"]
   },
   {
     "name": "IHC",
     "logo": "https://img-cdn.hltv.org/teamlogo/Dmy6A1T8EZ9OKU-x7yT4VR.png?ixlib=java-2.1.0&w=100&s=f4fe52db4325e243f484c495888c84b0",
-    "players": ["kabal", "sk0R", "Annihilation", "bLitz", "Techno"]
+    "players": ["kabal", "Bart4k", "Annihilation", "bLitz", "Techno"]
   },
   {
     "name": "9z",
@@ -147,6 +147,6 @@
   {
     "name": "Aurora",
     "logo": "https://img-cdn.hltv.org/teamlogo/ADjAWLKLLv0iS04qDD7RKF.png?ixlib=java-2.1.0&w=100&s=1fd208422308cf4c4cc621d1c0e8a8de",
-    "players": ["Lack1", "SELLTER", "KENSI", "Norwi", "latt1kk"]
+    "players": ["Lack1", "SELLTER", "KENSI", "Norwi", "lattykk"]
   }
 ]

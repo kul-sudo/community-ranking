@@ -14,7 +14,6 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/quicksand": "^4.5.11",
-    "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@types/sortablejs": "^1.15.0",
@@ -35,6 +34,7 @@
     "zustand": "^4.3.2"
   },
   "devDependencies": {
+    "@types/node": "^18.15.0",
     "cz-conventional-changelog": "^3.3.0"
   },
   "config": {
