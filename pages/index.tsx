@@ -5,7 +5,7 @@ import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, ref, set } from 'firebase/database'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ReactSortable } from 'react-sortablejs'
@@ -153,9 +153,9 @@ const getList = (dictionary: any) => {
   return ret
 }
 
-const Home = ({ teamsData, playersData }) => {
+const Home = ({ teamsData, playersData, ip }) => {
   const toast = useToast()
-  
+  console.log(ip) 
   const [searchTeam, setSearchTeam] = useState('')
   const [searchPlayerName, setSearchPlayerName] = useState('')
 
@@ -392,12 +392,7 @@ const Home = ({ teamsData, playersData }) => {
 }
 
 
-export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  
+export async function getServerSideProps({ req }) {
   let teamsData = {}
   let playersData = {}
 
@@ -413,8 +408,11 @@ export async function getServerSideProps({ req, res }) {
     })
   }))
 
+ const forwarded = req.headers['x-forwarded-for']
 
-  return { props: { teamsData, playersData } }
+  const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
+  
+  return { props: { teamsData, playersData, ip } }
 }
 
 export default Home
