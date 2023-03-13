@@ -176,6 +176,7 @@ const getList = (dictionary: any) => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+  console.log(ipToUse)
   ip = ip || { ip: ipToUse, addedAt: ELAPSED_TO_WAIT }
   const date = new Date()
   const time = date.getTime()
@@ -478,7 +479,7 @@ export async function getServerSideProps({ req }) {
 
   const forwarded = req.headers['x-forwarded-for']
 
-  const ipToUse = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
+  const ipToUse = typeof forwarded === 'string' ? forwarded[0] : req.socket.remoteAddress
   
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
