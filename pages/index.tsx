@@ -176,7 +176,6 @@ const getList = (dictionary: any) => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
-  console.log(ipToUse)
   ip = ip || { ip: ipToUse, addedAt: ELAPSED_TO_WAIT }
   const date = new Date()
   const time = date.getTime()
