@@ -1,14 +1,17 @@
 import Head from 'next/head'
-import { VStack, Text, Image, HStack, Center, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, Kbd, Show, Popover, PopoverTrigger, PopoverContent, Button, useDisclosure, useToast,  } from '@chakra-ui/react'
+import { VStack, Text, Image, HStack, Center, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, Kbd, Show, Popover, PopoverTrigger, PopoverContent, Button, useDisclosure, useToast, ModalFooter, Checkbox, CheckboxGroup,  } from '@chakra-ui/react'
 import { InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
-import { get, getDatabase, increment, ref, set } from 'firebase/database'
+import { get, getDatabase, increment, push, ref, remove, set } from 'firebase/database'
 import { useState } from 'react'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
+import { isNull } from 'util'
 import { ReactSortable } from 'react-sortablejs'
+
+const ELAPSED_TO_WAIT = 2400000
 
 let useTabIndex = set => ({
   number: 0,
@@ -52,6 +55,15 @@ const writePlayersData = (playerName: string, spot: number) => {
   })
 }
 
+const writeIP = (ip: string) => {
+  const date = new Date()
+
+  set(ref(db, `cooldownIPs/${ip}`), {
+    ip: ip,
+    addedAt: date.getTime()
+  })
+}
+
 const retrieveTeamData = async (teamName: string) => {
   const snapshot = await get(ref(db, `teams/${teamName}`))
   return snapshot.val()
@@ -59,6 +71,16 @@ const retrieveTeamData = async (teamName: string) => {
 
 const retrievePlayerData = async (playerName: string) => {
   const snapshot = await get(ref(db, `players/${playerName}`))
+  return snapshot.val()
+}
+
+const retrieveIP = async (ip: string) => {
+  const snapshot = await get(ref(db, `cooldownIPs/${ip}`))
+  return snapshot.val()
+}
+
+const retrieveAllIPs = async () => {
+  const snapshot = await get(ref(db, 'cooldownIPs'))
   return snapshot.val()
 }
 
@@ -153,9 +175,14 @@ const getList = (dictionary: any) => {
   return ret
 }
 
-const Home = ({ teamsData, playersData, ip }) => {
+const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+  ip = ip || { ip: ipToUse, addedAt: ELAPSED_TO_WAIT }
+  const date = new Date()
+  const time = date.getTime()
+
+  const elapsed = time - ip.addedAt
+
   const toast = useToast()
-  console.log(ip) 
   const [searchTeam, setSearchTeam] = useState('')
   const [searchPlayerName, setSearchPlayerName] = useState('')
 
@@ -210,6 +237,10 @@ const Home = ({ teamsData, playersData, ip }) => {
   
   const [hasVoted, setHasVoted] = useState(false)
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [voteForTeams, setVoteForTeams] = useState(false)
+  const [voteForPlayers, setVoteForPlayers] = useState(false)
+
   return (
     <>
       <Head>
@@ -223,11 +254,76 @@ const Home = ({ teamsData, playersData, ip }) => {
         <Guide />       
       </HStack>
 
-      <Box py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for 40 minutes</Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay
+          bg="none"
+          backdropFilter="auto"
+          backdropInvert="80%"
+          backdropBlur="2px"
+        />
+        <ModalContent width="15rem">
+          <ModalBody pt="1.5rem">
+            <VStack alignItems="left">
+              <Checkbox defaultChecked={false} onChange={e => setVoteForTeams(e.target.checked)}>Teams</Checkbox>
+              <Checkbox defaultChecked={false} onChange={e => setVoteForPlayers(e.target.checked)}>Players</Checkbox>
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter justifyContent="center">
+            <Button colorScheme="blue" onClick={() => {
+              if ((voteForTeams === false) && (voteForPlayers === false)) {
+                toast({
+                  title: 'Error',
+                  description: "Neither teams' nor players' checkbox has been selected.",
+                  status: 'error'
+                })
+                return
+              }
+
+              if (voteForTeams) {
+                const newTeamsList = getList(teamsList)
+                for (let i = 1; i <= 30; i++) {
+                  const element = newTeamsList[i - 1]
+                  writeTeamsData(element, i)
+                }
+              }
+              
+              if (voteForPlayers) {
+                const newPlayersList = getList(playersList)
+                for (let i = 1; i <= 30; i++) {
+                  const element = newPlayersList[i - 1]
+                  writePlayersData(element, i)
+                }
+              }
+
+              writeIP(ip.ip)
+              setHasVoted(true)
+              toast({
+                title: 'Success',
+                description: 'Your vote has been included. The page is to update.',
+                status: 'success'
+              })
+
+              onClose()
+              setTimeout(() => window.location.reload(), 1000)
+            }}>
+              Vote
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {(elapsed <= ELAPSED_TO_WAIT) && (
+        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for 40 minutes</Box>
+      )}
 
       <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
+
+      {(hasVoted || (elapsed >= ELAPSED_TO_WAIT)) && (
+        <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
+      )}
 
       <Tabs isLazy defaultIndex={tabIndex} onChange={handleTabsChange} variant="soft-rounded">
         <Center>
@@ -238,20 +334,6 @@ const Home = ({ teamsData, playersData, ip }) => {
         </Center>
         <TabPanels>
           <TabPanel>
-            <Button onClick={() => {
-              const newTeamsList = getList(teamsList)
-              for (let i = 1; i <= 30; i++) {
-                const element = newTeamsList[i - 1]
-                writeTeamsData(element, i)
-              }
-              setHasVoted(true)
-              toast({
-                title: 'Success',
-                description: 'Your vote has been included. The page is to update.',
-                status: 'success'
-              })
-              setTimeout(() => window.location.reload(), 1000)
-            }} isDisabled={hasVoted} zIndex="999" position="fixed" bottom="5" right="5">Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="teamsList">
                 <Input mt="0.5rem" width="15rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
@@ -286,7 +368,7 @@ const Home = ({ teamsData, playersData, ip }) => {
                                       draggable={false}
                                       width={{ base: '2.5rem', '1100px': '2.7rem' }}
                                       height="auto"
-                                      />
+                                    />
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
@@ -317,20 +399,6 @@ const Home = ({ teamsData, playersData, ip }) => {
             </Center>
           </TabPanel>
           <TabPanel>
-            <Button onClick={() => {
-              const newPlayersList = getList(playersList)
-              for (let i = 1; i <= 30; i++) {
-                const element = newPlayersList[i - 1]
-                writePlayersData(element, i)
-              }
-              setHasVoted(true)
-              toast({
-                title: 'Success',
-                description: 'Your vote has been included. The page is to update.',
-                status: 'success'
-              })
-              setTimeout(() => window.location.reload(), 1000)
-            }} isDisabled={hasVoted} zIndex="999" position="fixed" bottom="5" right="5">Apply spots</Button>
             <Center>
               <VStack spacing="2rem" id="playersList">
                 <Input mt="0.5rem" width="15rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
@@ -408,11 +476,33 @@ export async function getServerSideProps({ req }) {
     })
   }))
 
- const forwarded = req.headers['x-forwarded-for']
+  const forwarded = req.headers['x-forwarded-for']
 
-  const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
+  const ipToUse = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
   
-  return { props: { teamsData, playersData, ip } }
+  let ip;
+  await retrieveIP(ipToUse).then(async snapshot => {
+    ip = snapshot
+  })
+
+  let allIPs;
+  await retrieveAllIPs().then(async snapshot => {
+    allIPs = snapshot
+  })
+
+  const date = new Date()
+  const time = date.getTime()
+
+  if (!isNull(allIPs)) {
+    Object.keys(allIPs).map(key => {
+      const elapsed = time - allIPs[key].addedAt
+      if (elapsed >= ELAPSED_TO_WAIT) {
+        remove(ref(db, `cooldownIPs/${key}`))
+      }
+    })
+  }
+
+  return { props: { teamsData, playersData, ipToUse, ip, allIPs } }
 }
 
 export default Home
