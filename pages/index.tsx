@@ -5,8 +5,8 @@ import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
 import { initializeApp } from 'firebase/app'
 import { get, getDatabase, increment, push, ref, remove, set } from 'firebase/database'
-import { useState } from 'react'
-import create from 'zustand'
+import { useEffect, useState } from 'react'
+import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { isNull } from 'util'
 import { ReactSortable } from 'react-sortablejs'
@@ -83,7 +83,6 @@ const retrieveAllIPs = async () => {
   const snapshot = await get(ref(db, 'cooldownIPs'))
   return snapshot.val()
 }
-
 
 const Info = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -175,7 +174,7 @@ const getList = (dictionary: any) => {
   return ret
 }
 
-const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   ip = ip || { ip: ipToUse, addedAt: ELAPSED_TO_WAIT }
   const date = new Date()
   const time = date.getTime()
@@ -183,11 +182,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
   const elapsed = time - ip.addedAt
 
   const toast = useToast()
-  const [searchTeam, setSearchTeam] = useState('')
-  const [searchPlayerName, setSearchPlayerName] = useState('')
-
-  const handleTeamNameChange = event => setSearchTeam(event.target.value)
-  const handlePlayerNameChange = event => setSearchPlayerName(event.target.value)
 
   Teams.sort((a: Team, b: Team) => {
     const getSpotA = teamsData[a.name].sumOfSpots
@@ -240,6 +234,16 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [voteForTeams, setVoteForTeams] = useState(false)
   const [voteForPlayers, setVoteForPlayers] = useState(false)
+  const [currentTimer, setCurrentTimer] = useState(ELAPSED_TO_WAIT - elapsed)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const delta = currentTimer - 60000
+      setCurrentTimer(delta)
+    }, 60000)
+
+    return () => clearInterval(interval)
+  })
 
   return (
     <>
@@ -312,16 +316,16 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      {(elapsed <= ELAPSED_TO_WAIT) && (
-        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for 40 minutes</Box>
+      
+      {(elapsed <= ELAPSED_TO_WAIT || (currentTimer - 60000 >= 60000)) && (
+        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minutes</Box>
       )}
 
       <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
 
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
 
-      {(hasVoted || (elapsed >= ELAPSED_TO_WAIT)) && (
+      {(hasVoted || (elapsed > ELAPSED_TO_WAIT) || (currentTimer - 60000 >= 60000)) && (
         <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
       )}
 
@@ -336,7 +340,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
           <TabPanel>
             <Center>
               <VStack spacing="2rem" id="teamsList">
-                <Input mt="0.5rem" width="15rem" placeholder="Enter the team name" value={searchTeam} onChange={handleTeamNameChange} />
                 <ReactSortable
                   id="a"
                   filter=".addImageButtonContainer"
@@ -347,7 +350,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                 >
                   {Object.keys(teamsList).map((key: string) => {
                     return (
-                      <HStack display={Teams[key].name.toLowerCase().includes(searchTeam.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                      <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
                           <HStack px="1rem">
                             <Text>#{(teamSpots.indexOf(Teams[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
@@ -401,7 +404,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
           <TabPanel>
             <Center>
               <VStack spacing="2rem" id="playersList">
-                <Input mt="0.5rem" width="15rem" placeholder="Enter the player name" value={searchPlayerName} onChange={handlePlayerNameChange} />
                 <ReactSortable
                   filter=".addImageButtonContainer"
                   dragClass="sortableDrag"
@@ -411,7 +413,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                 >
                   {Object.keys(playersList).map((key: string) => {
                       return (
-                      <HStack display={Players[key].name.toLowerCase().includes(searchPlayerName.toLowerCase()) ? 'flex' : 'none'} justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
+                      <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
                           <HStack px="1rem" spacing="0.7rem">
                             <Text>#{(playerSpots.indexOf(Players[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
@@ -502,7 +504,7 @@ export async function getServerSideProps({ req }) {
     })
   }
 
-  return { props: { teamsData, playersData, ipToUse, ip, allIPs } }
+  return { props: { teamsData, playersData, ipToUse, ip } }
 }
 
 export default Home

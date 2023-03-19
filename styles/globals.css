@@ -1,6 +1,7 @@
 html {
   padding-bottom: 2rem;
   user-select: none;
+  /* filter: invert(80%); */
 }
 
 ::-webkit-scrollbar {
