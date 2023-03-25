@@ -123,6 +123,8 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
     return () => clearInterval(interval)
   })
 
+  console.log(currentTimer - 60000)
+
   return (
     <>
       <Head>
@@ -196,7 +198,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
         </ModalContent>
       </Modal>
       
-      {(elapsed <= ELAPSED_TO_WAIT || (currentTimer - 60000 >= 60000)) && (
+      {(currentTimer - 60000 >= 60000) && (
         <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minute(s)</Box>
       )}
 
