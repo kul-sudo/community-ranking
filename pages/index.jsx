@@ -1,171 +1,53 @@
 import Head from 'next/head'
-import { VStack, Text, Image, HStack, Center, Box, Input, Hide, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ListItem, OrderedList, Tabs, TabList, TabPanels, Tab, TabPanel, Kbd, Show, Popover, PopoverTrigger, PopoverContent, Button, useDisclosure, useToast, ModalFooter, Checkbox, CheckboxGroup,  } from '@chakra-ui/react'
-import { InfoIcon, QuestionIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import {
+  VStack,
+  Text,
+  Image,
+  HStack,
+  Center,
+  Box,
+  Hide,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Show,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+  ModalFooter,
+  Checkbox,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/react'
 import Teams from '../lib/teams.json'
 import Players from '../lib/players.json'
-import { initializeApp } from 'firebase/app'
-import { get, getDatabase, increment, push, ref, remove, set } from 'firebase/database'
 import { useEffect, useState } from 'react'
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import { isNull } from 'util'
 import { ReactSortable } from 'react-sortablejs'
+import {
+  writeIP,
+  writePlayersData,
+  writeTeamsData,
+  retrieveAllIPs,
+  retrieveIP,
+  retrievePlayerData,
+  retrieveTeamData,
+  removeIP
+} from '../lib/database'
+import useTabIndex from '../lib/tabIndex'
+import { Info } from '../components/Info'
+import { Guide } from '../components/Guide'
 
-const ELAPSED_TO_WAIT = 2400000
+const ELAPSED_TO_WAIT = process.env.NEXT_PUBLIC_ELAPSED_TO_WAIT
 
-let useTabIndex = set => ({
-  number: 0,
-  changeTabIndex: index => set(state => ({
-    number: index
-  }))
-})
-
-useTabIndex = persist(useTabIndex, { name: 'communityRankingTab' })
-useTabIndex = create(useTabIndex)
-
-type Team = {
-  name: string,
-  logo: string
-}
-
-const config = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: 'https://community-ranking-d7bf5-default-rtdb.firebaseio.com',
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
-  measurementId: process.env.MEASUREMENT_ID
-}
-
-initializeApp(config)
-
-const db = getDatabase()
-
-const writeTeamsData = (teamName: string, spot: number) => {
-  set(ref(db, `teams/${teamName}`), {
-    sumOfSpots: increment(spot)
-  })
-}
-
-const writePlayersData = (playerName: string, spot: number) => {
-  set(ref(db, `players/${playerName}`), {
-    sumOfSpots: increment(spot)
-  })
-}
-
-const writeIP = (ip: string) => {
-  const date = new Date()
-
-  set(ref(db, `cooldownIPs/${ip}`), {
-    ip: ip,
-    addedAt: date.getTime()
-  })
-}
-
-const retrieveTeamData = async (teamName: string) => {
-  const snapshot = await get(ref(db, `teams/${teamName}`))
-  return snapshot.val()
-}
-
-const retrievePlayerData = async (playerName: string) => {
-  const snapshot = await get(ref(db, `players/${playerName}`))
-  return snapshot.val()
-}
-
-const retrieveIP = async (ip: string) => {
-  const snapshot = await get(ref(db, `cooldownIPs/${ip}`))
-  return snapshot.val()
-}
-
-const retrieveAllIPs = async () => {
-  const snapshot = await get(ref(db, 'cooldownIPs'))
-  return snapshot.val()
-}
-
-const Info = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Info</ModalHeader>
-          <ModalBody pb="2rem">
-            <Center>
-              <Text fontSize="1.5rem" textAlign="center" color="teal.200">Vote for the spots of teams and players!</Text>
-            </Center>
-            <OrderedList mt="1rem" textAlign="center" fontSize="1.3rem">
-              <ListItem>You have 30 spots in total.</ListItem>
-              <ListItem>The teams/players are sorted by the arithmetic mean.</ListItem>
-              <ListItem>The page reloads once you have voted.</ListItem>
-            </OrderedList>
-          </ModalBody>
-          <ModalCloseButton />
-        </ModalContent>
-      </Modal>
-
-      <IconButton
-        zIndex="999"
-        position="fixed"
-        top="8"
-        left="1"
-        variant="ghost"
-        rounded="full"
-        boxSize="3.5rem"
-        icon={<InfoIcon boxSize="30" />}
-        onClick={onOpen}
-      />
-    </>
-  )
-}
-
-const Guide = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Info</ModalHeader>
-          <ModalBody pb="2rem">
-            <OrderedList spacing="0.5rem" textAlign="center" fontSize="1.3rem" textAlign="left">
-              <ListItem>
-                <Kbd><TriangleUpIcon /></Kbd> increments the team spot, whereas <Kbd><TriangleDownIcon /></Kbd> decrements it.
-              </ListItem>
-              <ListItem>
-                Press
-                <Button width="3.5rem" height="2rem" ml="10px" variant="outline" colorScheme="teal">Vote</Button> and
-                confirm your action in the alert dialogue.
-              </ListItem>
-              <ListItem>
-                Continue voting or refresh the page for the spots to be updated.
-              </ListItem>
-            </OrderedList>
-          </ModalBody>
-          <ModalCloseButton />
-        </ModalContent>
-      </Modal>
-
-      <IconButton
-        zIndex="999"
-        position="fixed"
-        top="8"
-        left="1"
-        variant="ghost"
-        rounded="full"
-        boxSize="3.5rem"
-        icon={<QuestionIcon boxSize="30" />}
-        onClick={onOpen}
-      />
-    </>
-  )
-}
-
-const getList = (dictionary: any) => {
+const getList = dictionary => {
   let ret = []
   for (let element of dictionary) {
     ret.push(element.name)
@@ -178,12 +60,12 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   ip = ip || { ip: ipToUse, addedAt: ELAPSED_TO_WAIT }
   const date = new Date()
   const time = date.getTime()
-
+  
   const elapsed = time - ip.addedAt
 
   const toast = useToast()
 
-  Teams.sort((a: Team, b: Team) => {
+  Teams.sort((a, b) => {
     const getSpotA = teamsData[a.name].sumOfSpots
     const getSpotB = teamsData[b.name].sumOfSpots
 
@@ -201,7 +83,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
     teamSpots.push(key.name)
   })
 
-  Players.sort((a: Team, b: Team) => {
+  Players.sort((a, b) => {
     const getSpotA = playersData[a.name].sumOfSpots
     const getSpotB = playersData[b.name].sumOfSpots
 
@@ -222,10 +104,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   const changeTabIndex = useTabIndex(state => state.changeTabIndex)
   const tabIndex = useTabIndex(state => state.number)
   
-  const handleTabsChange = index => {
-    changeTabIndex(index)
-  }
-
   const [teamsList, setTeamsList] = useState(Teams)
   const [playersList, setPlayersList] = useState(Players)
   
@@ -279,7 +157,8 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
                 toast({
                   title: 'Error',
                   description: "Neither teams' nor players' checkbox has been selected.",
-                  status: 'error'
+                  status: 'error',
+                  isClosable: true
                 })
                 return
               }
@@ -318,18 +197,18 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
       </Modal>
       
       {(elapsed <= ELAPSED_TO_WAIT || (currentTimer - 60000 >= 60000)) && (
-        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minutes</Box>
+        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minute(s)</Box>
       )}
 
-      <Text fontSize="3.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);" >The Community Ranking</Text>
+      <Text fontSize="2.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);">The Community Ranking</Text>
 
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
 
-      {(hasVoted || (elapsed > ELAPSED_TO_WAIT) || (currentTimer - 60000 >= 60000)) && (
+      {(currentTimer <= 0) && (
         <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
       )}
 
-      <Tabs isLazy defaultIndex={tabIndex} onChange={handleTabsChange} variant="soft-rounded">
+      <Tabs isLazy defaultIndex={tabIndex} onChange={index => changeTabIndex(index)} variant="soft-rounded">
         <Center>
           <TabList mt="2rem">
             <Tab>Teams</Tab>
@@ -348,7 +227,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
                   setList={setTeamsList}
                   animation={200}
                 >
-                  {Object.keys(teamsList).map((key: string) => {
+                  {Object.keys(teamsList).map(key => {
                     return (
                       <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '22rem', '1100px': '23rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
@@ -401,6 +280,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
               </VStack>
             </Center>
           </TabPanel>
+
           <TabPanel>
             <Center>
               <VStack spacing="2rem" id="playersList">
@@ -411,8 +291,8 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
                   setList={setPlayersList}
                   animation={200}
                 >
-                  {Object.keys(playersList).map((key: string) => {
-                      return (
+                  {Object.keys(playersList).map(key => {
+                    return (
                       <HStack justifyContent={{ base: 'center', '474px': 'left' }} backgroundColor="#111827" height="6rem" width={{ base: '7rem', '474px': '12rem' }} rounded="lg" borderWidth="2px" borderColor="#374151">
                         <HStack>
                           <HStack px="1rem" spacing="0.7rem">
@@ -449,8 +329,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
                         </HStack>
                       </HStack>
                     )
-                  }
-                  )}
+                  })}
                 </ReactSortable>
               </VStack>
             </Center>
@@ -461,8 +340,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   )
 }
 
-
-export async function getServerSideProps({ req }) {
+export const getServerSideProps = async ({ req }) => {
   let teamsData = {}
   let playersData = {}
 
@@ -477,8 +355,6 @@ export async function getServerSideProps({ req }) {
       playersData[player.name] = snapshot
     })
   }))
-
-  const forwarded = req.headers['x-forwarded-for']
 
   const ipToUse = req.socket.remoteAddress.replaceAll('.', '')
   
@@ -499,7 +375,7 @@ export async function getServerSideProps({ req }) {
     Object.keys(allIPs).map(key => {
       const elapsed = time - allIPs[key].addedAt
       if (elapsed >= ELAPSED_TO_WAIT) {
-        remove(ref(db, `cooldownIPs/${key}`))
+        removeIP(key)
       }
     })
   }
