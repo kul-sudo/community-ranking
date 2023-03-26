@@ -57,7 +57,7 @@ const getList = dictionary => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip }) => {
-  ip = isNull(ip) || isNaN(ip) ? { ip: ipToUse, addedAt: ELAPSED_TO_WAIT } : ip
+  ip = (isNull(ip) || isNaN(ip)) ? { ip: ipToUse, addedAt: ELAPSED_TO_WAIT } : ip
   
   const date = new Date()
   const time = date.getTime()
@@ -122,7 +122,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
     return () => clearInterval(interval)
   })
 
-  console.log(currentTimer, elapsed, ELAPSED_TO_WAIT)
+  console.log(currentTimer, elapsed, ELAPSED_TO_WAIT, time)
 
   return (
     <>
