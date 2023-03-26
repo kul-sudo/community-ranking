@@ -107,8 +107,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   const [teamsList, setTeamsList] = useState(Teams)
   const [playersList, setPlayersList] = useState(Players)
   
-  const [hasVoted, setHasVoted] = useState(false)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [voteForTeams, setVoteForTeams] = useState(false)
   const [voteForPlayers, setVoteForPlayers] = useState(false)
@@ -118,12 +116,13 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
     const interval = setInterval(() => {
       const delta = currentTimer - 60000
       setCurrentTimer(delta)
+      console.log(delta)
     }, 60000)
 
     return () => clearInterval(interval)
   })
 
-  console.log(currentTimer - 60000)
+  console.log((elapsed > ELAPSED_TO_WAIT), (currentTimer - 60000 <= 60000))
 
   return (
     <>
@@ -182,7 +181,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
               }
 
               writeIP(ip.ip)
-              setHasVoted(true)
+
               toast({
                 title: 'Success',
                 description: 'Your vote has been included. The page is to update.',
@@ -198,15 +197,15 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
         </ModalContent>
       </Modal>
       
-      {(currentTimer - 60000 >= 60000) && (
-        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minute(s)</Box>
+      {(elapsed <= ELAPSED_TO_WAIT || (currentTimer >= 0)) && (
+        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minutes</Box>
       )}
 
       <Text fontSize="2.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);">The Community Ranking</Text>
 
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
 
-      {(currentTimer <= 0) || (isNaN(currentTimer)) && (
+      {((elapsed >= ELAPSED_TO_WAIT) && (currentTimer <= 0)) && (
         <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
       )}
 
