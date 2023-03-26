@@ -122,7 +122,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
     return () => clearInterval(interval)
   })
 
-  console.log((elapsed >= ELAPSED_TO_WAIT), (currentTimer <= 0))
+  console.log(elapsed, ELAPSED_TO_WAIT, currentTimer)
 
   return (
     <>
