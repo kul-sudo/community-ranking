@@ -131,7 +131,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
           removeIP(ipToUse)
         } else {
           setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
-          console.log(isFound(ipToUse))
+          console.log(ipFound(ipToUse))
           setShowOverlay(true)
           setDoCycle(true)
         }
