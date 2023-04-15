@@ -122,19 +122,21 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [doCycle, setDoCycle] = useState(false)
 
-  if (!isNull(allIPs)) {
-    if (ipFound(ipToUse)) {
-      const time = date.getTime()
-      const elapsed = time - ip.addedAt
-      if (elapsed > ELAPSED_TO_WAIT) {
-        removeIP(ipToUse)
-      } else {
-        setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
-        setShowOverlay(true)
-        setDoCycle(true)
+  useEffect(() => {
+    if (!isNull(allIPs)) {
+      if (ipFound(ipToUse)) {
+        const time = date.getTime()
+        const elapsed = time - ip.addedAt
+        if (elapsed > ELAPSED_TO_WAIT) {
+          removeIP(ipToUse)
+        } else {
+          setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
+          setShowOverlay(true)
+          setDoCycle(true)
+        }
       }
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (doCycle) {
