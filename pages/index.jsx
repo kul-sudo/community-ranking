@@ -56,13 +56,15 @@ const getList = dictionary => {
   return ret
 }
 
-const Home = ({ teamsData, playersData, ipToUse, ip }) => {
-  ip = (isNull(ip) || isNaN(ip)) ? { ip: ipToUse, addedAt: ELAPSED_TO_WAIT } : ip
+const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+  // ip = (isNull(ip) || isNaN(ip)) ? { ip: ipToUse, addedAt: ELAPSED_TO_WAIT } : ip
   
+  const [canSend, setCanSend] = useState(true)
+
   const date = new Date()
   const time = date.getTime()
-  const elapsed = time - ip.addedAt
-  
+  const elapsed = 0
+
   const toast = useToast()
 
   Teams.sort((a, b) => {
@@ -107,22 +109,54 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
   const [teamsList, setTeamsList] = useState(Teams)
   const [playersList, setPlayersList] = useState(Players)
   
-  const [hasVoted, setHasVoted] = useState(false)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [voteForTeams, setVoteForTeams] = useState(false)
   const [voteForPlayers, setVoteForPlayers] = useState(false)
-  const [currentTimer, setCurrentTimer] = useState(ELAPSED_TO_WAIT - elapsed)
+  
+  const ipFound = ip => {
+    let found = false
+    Object.keys(allIPs).map(key => {
+      if (allIPs[key].ip === ip) {
+        found = true
+        return
+      }
+    })
+    return found
+  }
+
+  const [leftToAwait, setLeftToAwait] = useState(0)
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [doCycle, setDoCycle] = useState(false)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTimer(currentTimer - 60000)
-    }, 60000)
-
-    return () => clearInterval(interval)
+    if (doCycle) {
+      const interval = setInterval(() => {
+        setLeftToAwait(leftToAwait - 1)
+        if (leftToAwait === 1) {
+          removeIP(ipToUse)
+          setShowOverlay(false)
+          clearInterval(interval)
+        }
+      }, 60000)
+    }
   })
 
-  console.log(currentTimer, elapsed, ELAPSED_TO_WAIT, time)
+  useEffect(() => {
+    if (!isNull(allIPs)) {
+      if (ipFound(ipToUse)) {
+        const time_ = date.getTime()
+        const elapsed_ = time_ - ip.addedAt
+        if (elapsed_ > ELAPSED_TO_WAIT) {
+          removeIP(ipToUse)
+        } else {
+          setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed_) / 60000))
+          setShowOverlay(true)
+          setDoCycle(true)
+        }
+      }
+    }
+  }, [])
+
 
   return (
     <>
@@ -180,8 +214,8 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
                 }
               }
 
-              writeIP(ip.ip)
-              setHasVoted(true)
+              writeIP(ipToUse)
+
               toast({
                 title: 'Success',
                 description: 'Your vote has been included. The page is to update.',
@@ -197,15 +231,15 @@ const Home = ({ teamsData, playersData, ipToUse, ip }) => {
         </ModalContent>
       </Modal>
       
-      {(currentTimer >= 0) && (
-        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {Math.ceil(currentTimer / 60000)} minute(s)</Box>
+      {(showOverlay) && (
+        <Box zIndex="1" py="0.08rem" width="full" backgroundColor="yellow.500" position="sticky" top="0" textAlign="center">Temporary cooldown for {leftToAwait} minute(s)</Box>
       )}
 
       <Text fontSize="2.5rem" textAlign="center" mt="1rem" bgClip="text" fill="transparent" bgColor="#da99ff" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);">The Community Ranking</Text>
 
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
 
-      {(currentTimer <= 0) && (
+      {(!showOverlay) && (
         <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
       )}
 
@@ -369,19 +403,10 @@ export const getServerSideProps = async ({ req }) => {
     allIPs = snapshot
   })
 
-  const date = new Date()
-  const time = date.getTime()
+  // const date = new Date()
 
-  if (!isNull(allIPs)) {
-    Object.keys(allIPs).map(key => {
-      const elapsed = time - allIPs[key].addedAt
-      if (elapsed >= ELAPSED_TO_WAIT) {
-        removeIP(key)
-      }
-    })
-  }
 
-  return { props: { teamsData, playersData, ipToUse, ip } }
+  return { props: { teamsData, playersData, ipToUse, ip, allIPs } }
 }
 
 export default Home
