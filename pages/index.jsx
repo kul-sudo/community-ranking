@@ -45,8 +45,6 @@ import useTabIndex from '../lib/tabIndex'
 import { Info } from '../components/Info'
 import { Guide } from '../components/Guide'
 
-const ELAPSED_TO_WAIT = process.env.NEXT_PUBLIC_ELAPSED_TO_WAIT
-
 const getList = dictionary => {
   let ret = []
   for (let element of dictionary) {
@@ -57,6 +55,8 @@ const getList = dictionary => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+  const ELAPSED_TO_WAIT = process.env.NEXT_PUBLIC_ELAPSED_TO_WAIT
+
   const date = new Date()
 
   const toast = useToast()
