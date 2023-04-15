@@ -126,7 +126,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
 
   const [leftToAwait, setLeftToAwait] = useState(0)
   const [showOverlay, setShowOverlay] = useState(false)
-  const [doCycle, setDoCycle] = useState(false)
+  let doCycle = false
 
   useEffect(() => {
     if (doCycle) {
@@ -151,7 +151,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
         } else {
           setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed_) / 60000))
           setShowOverlay(true)
-          setDoCycle(true)
+          doCycle = true
         }
       }
     }
