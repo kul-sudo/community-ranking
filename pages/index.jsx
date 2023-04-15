@@ -157,6 +157,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
     }
   }, [])
 
+  useEffect(() => console.log(leftToAwait))
 
   return (
     <>
