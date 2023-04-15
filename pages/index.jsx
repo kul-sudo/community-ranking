@@ -132,6 +132,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
         } else {
           setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
           console.log(ipFound(ipToUse))
+          console.log(ip.addedAt, 'aa')
           setShowOverlay(true)
           setDoCycle(true)
         }
