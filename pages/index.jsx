@@ -131,8 +131,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
           removeIP(ipToUse)
         } else {
           setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
-          console.log(ipFound(ipToUse))
-          console.log(ELAPSED_TO_WAIT, elapsed)
           setShowOverlay(true)
           setDoCycle(true)
         }
@@ -152,9 +150,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
       }, 60000)
     }
   })
-
-
-  useEffect(() => console.log(leftToAwait))
 
   return (
     <>
