@@ -58,8 +58,6 @@ const getList = dictionary => {
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
   const date = new Date()
-  console.log(ipToUse)
-
 
   const toast = useToast()
 
@@ -387,15 +385,8 @@ export const getServerSideProps = async ({ req }) => {
     })
   }))
 
-  let ipToUse; 
-  if (req.headers['x-forwarded-for']) {
-    ipToUse = req.headers['x-forwarded-for'].split(',')[0]
-  } else if (req.headers['x-real-ip']) {
-    ipToUse = req.connection.remoteAddress;
-  } else {
-    ipToUse = req.connection.remoteAddress
-  } 
-
+  const ipToUse = req.socket.remoteAddress.replaceAll('.', '')
+  
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
     ip = snapshot
@@ -405,6 +396,9 @@ export const getServerSideProps = async ({ req }) => {
   await retrieveAllIPs().then(async snapshot => {
     allIPs = snapshot
   })
+
+  // const date = new Date()
+
 
   return { props: { teamsData, playersData, ipToUse, ip, allIPs } }
 }
