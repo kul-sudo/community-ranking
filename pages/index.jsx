@@ -57,13 +57,7 @@ const getList = dictionary => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
-  // ip = (isNull(ip) || isNaN(ip)) ? { ip: ipToUse, addedAt: ELAPSED_TO_WAIT } : ip
-  
-  const [canSend, setCanSend] = useState(true)
-
   const date = new Date()
-  const time = date.getTime()
-  const elapsed = 0
 
   const toast = useToast()
 
@@ -126,7 +120,21 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
 
   const [leftToAwait, setLeftToAwait] = useState(0)
   const [showOverlay, setShowOverlay] = useState(false)
-  let doCycle = false
+  const [doCycle, setDoCycle] = useState(false)
+
+  if (!isNull(allIPs)) {
+    if (ipFound(ipToUse)) {
+      const time = date.getTime()
+      const elapsed = time - ip.addedAt
+      if (elapsed > ELAPSED_TO_WAIT) {
+        removeIP(ipToUse)
+      } else {
+        setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
+        setShowOverlay(true)
+        setDoCycle(true)
+      }
+    }
+  }
 
   useEffect(() => {
     if (doCycle) {
@@ -141,21 +149,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
     }
   })
 
-  useEffect(() => {
-    if (!isNull(allIPs)) {
-      if (ipFound(ipToUse)) {
-        const time_ = date.getTime()
-        const elapsed_ = time_ - ip.addedAt
-        if (elapsed_ > ELAPSED_TO_WAIT) {
-          removeIP(ipToUse)
-        } else {
-          setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed_) / 60000))
-          setShowOverlay(true)
-          doCycle = true
-        }
-      }
-    }
-  }, [])
 
   useEffect(() => console.log(leftToAwait))
 
