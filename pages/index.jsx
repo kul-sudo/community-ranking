@@ -57,8 +57,6 @@ const getList = dictionary => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
-  console.log(ipToUse)
-
   const date = new Date()
 
   const toast = useToast()
