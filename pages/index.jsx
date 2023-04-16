@@ -56,7 +56,8 @@ const getList = dictionary => {
   return ret
 }
 
-const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
+const Home = ({ teamsData, playersData, ipToUse, ip, allIPs, ipToUse_ }) => {
+  console.log(ipToUse_)
   const date = new Date()
 
   const toast = useToast()
@@ -399,8 +400,9 @@ export const getServerSideProps = async ({ req }) => {
 
   // const date = new Date()
 
+  let ipToUse_ = req.connection.remoteAddress;
 
-  return { props: { teamsData, playersData, ipToUse, ip, allIPs } }
+  return { props: { teamsData, playersData, ipToUse, ip, allIPs, ipToUse_ } }
 }
 
 export default Home
