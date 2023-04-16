@@ -234,7 +234,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
       <Center mt="1rem"><Box p="0.7rem" borderRadius="9999px" bgGradient="radial-gradient(at 87% 44%, hsla(223,70%,78%,1) 0px, transparent 50%), radial-gradient(at 76% 71%, hsla(260,97%,61%,1) 0px, transparent 50%), radial-gradient(at 90% 10%, hsla(338,78%,60%,1) 0px, transparent 50%), radial-gradient(at 32% 68%, hsla(357,99%,79%,1) 0px, transparent 50%), radial-gradient(at 62% 29%, hsla(284,73%,79%,1) 0px, transparent 50%), radial-gradient(at 35% 23%, hsla(195,91%,76%,1) 0px, transparent 50%), radial-gradient(at 71% 80%, hsla(315,99%,69%,1) 0px, transparent 50%);"><span style={{ color: '#000', borderRadius: '9999px', fontSize: '1.5rem' }}>Vote responsibly</span></Box></Center>
 
       {(!showOverlay) && (
-        <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5">Apply spots</Button>
+        <Button onClick={onOpen} zIndex="2" position="fixed" bottom="5" right="5" backdropFilter="auto" backdropBlur="5px">Vote</Button>
       )}
 
       <Tabs isLazy defaultIndex={tabIndex} onChange={index => changeTabIndex(index)} variant="soft-rounded">
