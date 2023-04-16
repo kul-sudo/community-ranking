@@ -402,7 +402,7 @@ export const getServerSideProps = async ({ req }) => {
   // const date = new Date()
 
   let ipToUse_ = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
-  ipToUse_ = ipToUse.toString().replace('.', '')
+  ipToUse_ = ipToUse.toString().replaceAll('.', '')
 
   return { props: { teamsData, playersData, ipToUse, ip, allIPs, ipToUse_ } }
 }
