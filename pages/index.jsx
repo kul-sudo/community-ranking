@@ -387,7 +387,7 @@ export const getServerSideProps = async ({ req }) => {
   }))
 
   const forwarded = req.headers['x-forwarded-for'];
-  const ipToUse = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
+  const ipToUse = req.socket.remoteaddress.replaceall('.', '')
   
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
@@ -402,7 +402,7 @@ export const getServerSideProps = async ({ req }) => {
   // const date = new Date()
 
   let ipToUse_ = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
-  ipToUse_ = ipToUse.toString()
+  ipToUse_ = ipToUse.toString().replaceAll('.', '')
 
   return { props: { teamsData, playersData, ipToUse, ip, allIPs, ipToUse_ } }
 }
