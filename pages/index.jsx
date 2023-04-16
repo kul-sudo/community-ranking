@@ -57,7 +57,6 @@ const getList = dictionary => {
 }
 
 const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
-  ipToUse = ipToUse.replaceAll('.', '')
   console.log(ipToUse)
 
   const date = new Date()
@@ -389,8 +388,9 @@ export const getServerSideProps = async ({ req }) => {
   }))
 
   const forwarded = req.headers['x-forwarded-for']
-  const ipToUse = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
-  
+  let ipToUse = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress
+  ipToUse = ipToUse.replaceAll('.', '')
+
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
     ip = snapshot
