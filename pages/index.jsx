@@ -39,7 +39,8 @@ import {
   retrieveIP,
   retrievePlayerData,
   retrieveTeamData,
-  removeIP
+  removeIP,
+  isIPExistent
 } from '../lib/database'
 import useTabIndex from '../lib/tabIndex'
 import { Info } from '../components/Info'
@@ -182,6 +183,16 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
 
           <ModalFooter justifyContent="center">
             <Button colorScheme="blue" onClick={() => {
+              if (isIPExistent(ipToUse)) {
+                toast({
+                  title: 'Error',
+                  description: 'You are already on cooldown.',
+                  status: 'error',
+                  isClosable: true
+                })
+                return
+              }
+
               if ((voteForTeams === false) && (voteForPlayers === false)) {
                 toast({
                   title: 'Error',
