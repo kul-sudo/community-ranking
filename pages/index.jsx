@@ -386,7 +386,7 @@ export const getServerSideProps = async ({ req }) => {
     })
   }))
 
-  const ipToUse = req.socket.remoteaddress.replaceAll('.', '')
+  const ipToUse = req.socket.remoteAddress.replaceAll('.', '')
   
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
