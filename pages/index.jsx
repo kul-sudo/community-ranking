@@ -387,7 +387,7 @@ export const getServerSideProps = async ({ req }) => {
   }))
 
   const forwarded = req.headers['x-forwarded-for'];
-  const ipToUse = req.socket.remoteaddress.replaceall('.', '')
+  const ipToUse = req.socket.remoteaddress.replaceAll('.', '')
   
   let ip;
   await retrieveIP(ipToUse).then(async snapshot => {
