@@ -400,7 +400,8 @@ export const getServerSideProps = async ({ req }) => {
 
   // const date = new Date()
 
-  let ipToUse_ = req.connection.remoteAddress;
+  const forwarded = req.headers['x-forwarded-for'];
+  let ipToUse_ = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
 
   return { props: { teamsData, playersData, ipToUse, ip, allIPs, ipToUse_ } }
 }
