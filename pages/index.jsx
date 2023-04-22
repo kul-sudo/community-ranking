@@ -45,7 +45,8 @@ import useTabIndex from '../lib/tabIndex'
 import { Info } from '../components/Info'
 import { Guide } from '../components/Guide'
 
-const ELAPSED_TO_WAIT = process.env.NEXT_PUBLIC_ELAPSED_TO_WAIT
+const MINUTE_TO_MILLISECONDS = process.env.NEXT_PUBLIC_MINUTE_TO_MILLISECONDS
+const ELAPSED_TO_WAIT = process.env.NEXT_PUBLIC_ELAPSED_TO_WAIT * MINUTE_TO_MILLISECONDS
 
 const getList = dictionary => {
   let ret = []
@@ -121,7 +122,6 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
 
   const [leftToAwait, setLeftToAwait] = useState(0)
   const [showOverlay, setShowOverlay] = useState(false)
-  const [doCycle, setDoCycle] = useState(false)
 
   useEffect(() => {
     if (!isNull(allIPs)) {
@@ -131,26 +131,23 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
         if (elapsed > ELAPSED_TO_WAIT) {
           removeIP(ipToUse)
         } else {
-          setLeftToAwait(Math.ceil((ELAPSED_TO_WAIT - elapsed) / 60000))
+          let localLeftToAwait = Math.ceil((ELAPSED_TO_WAIT - elapsed) / MINUTE_TO_MILLISECONDS)
+          setLeftToAwait(localLeftToAwait)
           setShowOverlay(true)
-          setDoCycle(true)
+          
+          const interval = setInterval(() => {
+            if (localLeftToAwait - 1 === 0) {
+              removeIP(ipToUse)
+              setShowOverlay(false)
+              clearInterval(interval)
+            }
+            localLeftToAwait--
+            setLeftToAwait(localLeftToAwait)
+          }, 1*MINUTE_TO_MILLISECONDS)
         }
       }
     }
   }, [])
-
-  useEffect(() => {
-    if (doCycle) {
-      const interval = setInterval(() => {
-        setLeftToAwait(leftToAwait - 1)
-        if (leftToAwait === 1) {
-          removeIP(ipToUse)
-          setShowOverlay(false)
-          clearInterval(interval)
-        }
-      }, 60000)
-    }
-  })
 
   return (
     <>
