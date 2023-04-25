@@ -329,7 +329,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                                 draggable={false}
                                 width="2.5rem"
                                 height="auto"
-                                />
+                              />
                             </Show>
                             <Hide breakpoint="(min-width: 474px)">
                               <Popover>
@@ -340,7 +340,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                                       draggable={false}
                                       width={{ base: '2.5rem', '1100px': '2.7rem' }}
                                       height="auto"
-                                      />
+                                    />
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent width="fit-content" p="0.5rem" backgroundColor="#cbd5e0">
