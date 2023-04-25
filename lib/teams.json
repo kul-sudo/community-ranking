@@ -77,7 +77,7 @@
   {
     "name": "Astralis",
     "logo": "https://img-cdn.hltv.org/teamlogo/9bgXHp-oh1oaXr7F0mTGmd.svg?ixlib=java-2.1.0&s=f567161ab183001be33948b98c4b2067",
-    "players": ["dev1ce", "Buzz", "gla1ve", "Xyp9x", "blameF"]
+    "players": ["dev1ce", "Buzz", "gla1ve", "Altekz", "blameF"]
   },
   {
     "name": "fnatic",
@@ -107,7 +107,7 @@
   {
     "name": "Evil Geniuses",
     "logo": "https://img-cdn.hltv.org/teamlogo/p6OXTVsTFEhOcbTJ8gmuP6.png?invert=true&ixlib=java-2.1.0&sat=-100&w=100&s=2e51eb9aef71e50ef46e5fc812876d18",
-    "players": ["autimatic", "Brehze", "neaLaN", "wiz", "HexT"]
+    "players": ["autimatic", "Brehze", "neaLaN", "wiz", "refrezh"]
   },
   {
     "name": "Movistar Riders",
@@ -122,7 +122,7 @@
   {
     "name": "Copenhagen Flames",
     "logo": "https://img-cdn.hltv.org/teamlogo/o9gWbZqKaYgDJL5ttGKuqQ.png?ixlib=java-2.1.0&w=100&s=9937572ba28748784a4d64e993eaec4c",
-    "players": ["raalz", "b0RUP", "TMB", "birdfromsky", "regali"]
+    "players": ["raalz", "b0RUP", "TMB", "birdfromsky", "Farlig"]
   },
   {
     "name": "Sprout",
@@ -130,9 +130,9 @@
     "players": ["XELLOW", "AZR", "Zyphon", "Staehr", "lauNX"]
   },
   {
-    "name": "IHC",
-    "logo": "https://img-cdn.hltv.org/teamlogo/Dmy6A1T8EZ9OKU-x7yT4VR.png?ixlib=java-2.1.0&w=100&s=f4fe52db4325e243f484c495888c84b0",
-    "players": ["kabal", "Bart4k", "Annihilation", "bLitz", "Techno"]
+    "name": "TheMongolz",
+    "logo": "https://img-cdn.hltv.org/teamlogo/yJHE9gJeOn-BOc3vKkupqQ.png?invert=true&ixlib=java-2.1.0&sat=-100&w=100&s=36a44af13e946546d1a7cbfdb39a9486",
+    "players": ["hasteka", "Bart4k", "Annihilation", "bLitz", "Techno"]
   },
   {
     "name": "9z",
