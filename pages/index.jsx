@@ -285,7 +285,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                               </Popover>
                             </Hide>
 
-                            <Hide breakpoint="(max-width: 474px)">
+                            <Show breakpoint="(min-width: 474px)">
                               <VStack spacing="0" alignItems="left">
                                 <Text id={`${teamsList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '1rem' }}>{teamsList[key].name}</Text>
                                 <HStack>
@@ -296,7 +296,7 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                                   })}
                                 </HStack>
                               </VStack>
-                            </Hide>
+                            </Show>
                           </HStack>
                         </HStack>
                       </HStack>
@@ -324,12 +324,14 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                           <HStack px="1rem" spacing="0.7rem">
                             <Text>#{(playerSpots.indexOf(Players[key].name)+1).toLocaleString('en-gb', { minimumIntegerDigits: 2, useGrouping:false })}</Text>
                             <Show breakpoint="(min-width: 474px)">
-                              <Image
-                                src={playersList[key].logo}
-                                draggable={false}
-                                width="2.5rem"
-                                height="auto"
-                              />
+                              <VStack>
+                                <Image
+                                  src={playersList[key].logo}
+                                  draggable={false}
+                                  width="2.5rem"
+                                  height="auto"
+                                />
+                              </VStack>
                             </Show>
                             <Hide breakpoint="(min-width: 474px)">
                               <Popover>
@@ -348,9 +350,10 @@ const Home = ({ teamsData, playersData, ipToUse, ip, allIPs }) => {
                                 </PopoverContent>
                               </Popover>
                             </Hide>
-                            <Hide breakpoint="(max-width: 474px)">
-                              <Text id={`${playersList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{playersList[key].name}</Text>
-                            </Hide>
+
+                            <Show breakpoint="(min-width: 474px)">
+                              <Text id={`${playersList[key].name}-team-name`} color="#fff" fontWeight="600" fontSize={{ base: '0.9rem', '1100px': '0.85rem' }}>{playersList[key].name}</Text> 
+                            </Show>
                           </HStack>
                         </HStack>
                       </HStack>
